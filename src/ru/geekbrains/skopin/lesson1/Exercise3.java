@@ -1,3 +1,4 @@
+
 package ru.geekbrains.skopin.lesson1;
 
 public class Exercise3 {
@@ -14,4 +15,3 @@ public class Exercise3 {
         return a*(b+(c/d));
     }
 }
-

@@ -1,3 +1,4 @@
+
 package ru.geekbrains.skopin.lesson1;
 
 public class Exercise2 {

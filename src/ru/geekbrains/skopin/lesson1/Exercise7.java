@@ -1,9 +1,10 @@
+
 package ru.geekbrains.skopin.lesson1;
 
 public class Exercise7 {
 
     public static void main(String[] args) {
-     /* проверка : */
+        /* проверка : */
         String name = "Леша";
         hello(name);
         hello("Маша");
