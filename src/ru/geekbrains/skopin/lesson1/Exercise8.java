@@ -11,7 +11,7 @@ public class Exercise8 {
 //        getStatus(2000); // true
 //        getStatus(2100); // false
 //        getStatus(2200); // false
-//        getStatus(2300); // false
+//        getStatus(1560); // false
 //        getStatus(2020); // true
 
     }
