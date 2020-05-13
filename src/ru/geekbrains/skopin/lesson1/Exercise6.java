@@ -1,6 +1,7 @@
 package ru.geekbrains.skopin.lesson1;
 
 public class Exercise6 {
+
     public static void main(String[] args) {
   /*    проверка : */
         System.out.println(moreOrLess(-1));

@@ -1,6 +1,7 @@
 package ru.geekbrains.skopin.lesson1;
 
 public class Exercise3 {
+
     public static void main(String[] args) {
 //   /*   проверка : */
 //        float a = 1.333f;
