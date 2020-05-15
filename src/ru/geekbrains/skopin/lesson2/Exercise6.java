@@ -6,7 +6,6 @@ public class Exercise6 {
         int [] array2 = { 7, 1, 1, 1, 1, 1, 1, 1};    // true
         int [] array3 = { 1, 1, 1, 1, 1, 1, 1, 1};    // true
         int [] array4 = { 1, 1, 1, 1, 2, 1, 1, 1};    // false
-    /* test : */
         System.out.println(middleWay(array1));
         System.out.println(middleWay(array2));
         System.out.println(middleWay(array3));

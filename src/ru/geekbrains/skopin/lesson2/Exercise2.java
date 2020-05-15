@@ -6,9 +6,9 @@ public class Exercise2 {
         for (int i = 0; i < array.length; i++){
             array [i] = i * 3;
         }
-//    /*  test : */
-//        for (int a : array) {
-//            System.out.print(a + " ");
-//        }
+    /*  test : */
+        for (int a : array) {
+            System.out.print(a + " ");
+        }
     }
 }

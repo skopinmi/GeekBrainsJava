@@ -12,7 +12,7 @@ public class Exercise7 {
     }
 
 
-    public static int [] dislocationArray (int [] array, int dislocation) {
+    private static int [] dislocationArray (int [] array, int dislocation) {
         int dis;
         if (dislocation < 0) {                   // получение необходимого количества
             dis = dislocation * - 1;
