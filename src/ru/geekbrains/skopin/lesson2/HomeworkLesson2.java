@@ -66,15 +66,15 @@ public class HomeworkLesson2 {
          test:
  */
         int[] arrayForDislocation = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        int dislocation =  -20;
+        int dislocation =   -1;
         arrayForDislocation = dislocateArray(arrayForDislocation, dislocation);
-//        for (int a : arrayForDislocation) {
-//            if (dislocation < 0) {
-//                System.out.print(a + " < ");
-//            } else {
-//                System.out.print(a + " > ");
-//            }
-//        }
+        for (int a : arrayForDislocation) {
+            if (dislocation < 0) {
+                System.out.print(a + " < ");
+            } else {
+                System.out.print(a + " > ");
+            }
+        }
     }
     private static void changeArray (byte[] array) {
         for (int i = 0; i < array.length; i++ ) {
@@ -147,11 +147,9 @@ public class HomeworkLesson2 {
     }
 
     private static int [] dislocateArray (int [] array, int dislocation) {
-        int dis;
-        if (dislocation < 0) {                   // получение необходимого количества смещений положительная величина
-            dis = dislocation * - 1;
-        } else {
-            dis = dislocation;
+        int dis = dislocation;
+        if (dis < 0) {                   // получение необходимого количества смещений положительная величина
+            dis *= - 1;
         }
 
         for( int z = 0; z < dis; z++ ){
@@ -170,9 +168,9 @@ public class HomeworkLesson2 {
                 change = change2;                                    // смещения
 
                 if (dislocation > 0) {                               // определение следующего положения
-                    nextPosition += 1;                               // в массиве для смещения
+                    nextPosition ++;                               // в массиве для смещения
                 } else {
-                    nextPosition -= 1;
+                    nextPosition --;
                 }
                 if (nextPosition > array.length - 1) {              // проверка на соответсвование
                     nextPosition = nextPosition - array.length;     // индекса следующей позиции
