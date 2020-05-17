@@ -20,6 +20,7 @@ public class Homework1 {
     }
 
     public static boolean playGame (Scanner sc, int numberTry, int maxNumber) { //логика игры результат победа да/нет
+
         boolean win = false;
         int number = (int) (Math.random() * (maxNumber + 1));          // загадали число
         for (int i = 0; i < numberTry; i++) {
