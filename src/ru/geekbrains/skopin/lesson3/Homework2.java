@@ -13,7 +13,7 @@ public class Homework2 {
         };
         int indexWord = (int) (Math.random() * 25);
         Boolean win;
-        String thisWord = words[indexWord];
+        String thisWord = words[indexWord];            // загадали слово
         System.out.println("Угадайте загаданное слово.");
         String userWord;
         do {
@@ -28,7 +28,7 @@ public class Homework2 {
         sc.close();
     }
 
-    public static void sayResult (Boolean win){ //печать результата
+    public static void sayResult (Boolean win) {                //печать результата
         System.out.println(win?"Вы угадали!":"Вы не угадали!");
     }
 
