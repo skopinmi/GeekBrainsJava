@@ -1,6 +1,8 @@
+
 package ru.geekbrains.skopin.lesson1;
 
 public class Exercise5 {
+
     public static void main(String[] args) {
 //     /* проверка : */
 //        moreOreLess(10);

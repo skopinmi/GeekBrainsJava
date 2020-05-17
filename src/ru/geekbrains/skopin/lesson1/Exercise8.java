@@ -1,6 +1,8 @@
+
 package ru.geekbrains.skopin.lesson1;
 
 public class Exercise8 {
+
     public static void main(String[] args) {
 //     /* test : */
 //        getStatus(1700); // false
