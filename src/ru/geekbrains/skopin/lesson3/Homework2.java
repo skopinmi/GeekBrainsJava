@@ -48,7 +48,7 @@ public class Homework2 {
                 System.out.print("#");
             }
         }
-        for (int i = 0; i < 16 - littleWord; i++) {                     // все что меньше 15 допечатываем #
+        for (int i = 0; i < 15 - littleWord; i++) {                     // все что меньше 15 допечатываем #
             System.out.print("#");
         }
         System.out.println("");
