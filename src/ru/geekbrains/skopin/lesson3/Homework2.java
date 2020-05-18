@@ -14,14 +14,14 @@ public class Homework2 {
         };
         int indexWord = (int) (Math.random() * 25);
         Boolean win;
-        String thisWord = words[indexWord];            // загадали слово
+        String thisWord = words[indexWord];                                     // загадали слово
         System.out.println("Угадайте загаданное слово.");
         String userWord;
         do {
             userWord = sc.nextLine();
             win = compareTwoWords(thisWord, userWord);
             if (!win) {
-                printChar(thisWord, userWord);
+                printChars(thisWord, userWord);
                 System.out.println("Попробуйте еще.");
             }
             sayResult(win);
@@ -37,10 +37,10 @@ public class Homework2 {
         return thisWord.equals(userWord);
     }
 
-    public static void printChar (String thisWord, String userWord){   // печать совпавших букв и #
+    public static void printChars (String thisWord, String userWord){           // печать совпавших букв и #
         int littleWord = Math.min(thisWord.length() , userWord.length()) ;
-        for (int i = 0; i < littleWord - 1; i++) {    // печать совпадений
-            char a = thisWord.charAt(i);
+        for (int i = 0; i < littleWord; i++) {                             // печать совпадений
+            char a = thisWord.charAt(i);                                       // и символов #
             char b = userWord.charAt(i);
             if (a == b) {
                 System.out.print(a);
@@ -48,7 +48,7 @@ public class Homework2 {
                 System.out.print("#");
             }
         }
-        for (int i = 0; i < 16 - thisWord.length(); i++) { // допечатываем до 15 #
+        for (int i = 0; i < 16 - littleWord; i++) {                     // все что меньше 15 допечатываем #
             System.out.print("#");
         }
         System.out.println("");

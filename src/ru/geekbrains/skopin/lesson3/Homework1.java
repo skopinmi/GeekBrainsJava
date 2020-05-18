@@ -35,12 +35,14 @@ public class Homework1 {
         }
         return win;
     }
+
     public static void sayResult (Boolean win){ //печать результата
         System.out.println(win?"Вы угадали!":"Вы не угадали!");
     }
+
     public static Boolean isNextGame (Scanner sc) { // запрос продолжать ли игру?
         System.out.println("Попробуйте еще раз?");
         System.out.println("Повторить игру еще раз? 1 - да / 0 - нет.");
-        return sc.nextInt() != 0;
+        return sc.nextInt() != 0; // получение ответа
     }
 }
