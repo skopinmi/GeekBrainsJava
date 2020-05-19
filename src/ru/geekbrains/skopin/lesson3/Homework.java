@@ -28,7 +28,7 @@ public class Homework {
                 "mushroom", "nut", "olive", "pea", "peanut", "pear",
                 "pepper", "pineapple", "pumpkin", "potato"
         };
-        String thisWord =  guessTheWold(words);                                 // загадали слово
+        String thisWord =  guessTheWord(words);                                 // загадали слово
         System.out.println("Угадайте загаданное слово.");
         System.out.println("###############");
 //      игра №1 :
@@ -115,7 +115,7 @@ public class Homework {
         } while (!win);
     }
 
-    private static String guessTheWold (String [] array) {
+    private static String guessTheWord (String [] array) {
         int index = (int) (Math.random() * (array.length + 1));          // загадали число
         return array[index];
     }
