@@ -18,25 +18,29 @@ public class HomeWork2v2 {
                 "mushroom", "nut", "olive", "pea", "peanut", "pear",
                 "pepper", "pineapple", "pumpkin", "potato"
         };
-        String userGuessChars = "###############";    // строка с отгаданными символами
-        int indexWord = (int) (Math.random() * 25);
+        String thisWord = guessTheWold(words);                                     // загадали слово
+        System.out.println("Угадайте загаданное слово.");
+        playGame2(sc, thisWord);
+        sc.close();
+    }
+    private static void playGame2 (Scanner sc, String thisWord) {                   // игра
         Boolean win;
-        String thisWord = words[indexWord];                                     // загадали слово
-        System.out.println("Угадайте загаданное слово." + thisWord);
-        String userWord;
+        String userGuessChars = "###############";                               // строка с отгаданными символами
         do {
-            userWord = sc.nextLine();
+            String userWord = sc.nextLine();                                           // слово игрока
             win = compareTwoWords(thisWord, userWord);
-            userGuessChars = makeUserGuessChars2(thisWord, userWord, userGuessChars); // изменяем строку с отгаданными символами
+            userGuessChars = makeUserGuessChars(thisWord, userWord, userGuessChars); // изменяем строку с отгаданными символами
             if (!win) {
                 System.out.println(userGuessChars);
                 System.out.println("Попробуйте еще.");
             }
             sayResult(win);
         } while (!win);
-        sc.close();
     }
-
+    private static String guessTheWold (String [] array) {
+        int index = (int) (Math.random() * (array.length + 1));          // загадали число
+        return array[index];
+    }
     public static void sayResult (Boolean win) {                //печать результата
         System.out.println(win?"Вы угадали!":"Вы не угадали!");
     }
@@ -45,30 +49,34 @@ public class HomeWork2v2 {
         return thisWord.equals(userWord);
     }
 
-    public static String makeWord15Char (String word) {
-        int size = word.length();                                 // уравниваем слова до 15 символов
-        for (int i = 0; i < 15 - size; i++) {                     // все что меньше 15 допечатываем #
+    public static String makeWordMoreChar (String word, int numberOfChar) {
+        int size = word.length();                                             // уравниваем слова до 15 символов
+        for (int i = 0; i < (numberOfChar - size); i++) {                     // все что меньше 15 допечатываем #
             word += "#";
         }
         return word;
     }
 
-    public static String makeUserGuessChars2 (String thisWord, String userWord, String userGuessChars) {
+    private static String makeUserGuessChars (String thisWord, String userWord, String userGuessChars) {
         String buildWord = "";
-        int littleWord = Math.min(thisWord.length() , userWord.length()) ;
-        for (int i = 0; i < littleWord; i++) {                             // запись в  String  совпавших символов
+        if (thisWord.length() < userWord.length()) {                              //          выбираем меньшее слово
+            thisWord = makeWordMoreChar(thisWord, userWord.length());             //          уравниваем до большего
+        } else {                                                                  //          добавление #
+            userWord = makeWordMoreChar(userWord, thisWord.length());
+        }
+        for (int i = 0; i < thisWord.length(); i++) {                             // запись в  String  совпавших символов
             char a = thisWord.charAt(i);                                   // и символов #
             char b = userWord.charAt(i);
             char c = userGuessChars.charAt(i);
             if (a == b) {
                 buildWord += a;
-            } else if ((int) c != 35) {                                 // если на этой позиции не # буква отгадана игроком
+            } else if ( c != 35) {                                 // если на этой позиции не # буква отгадана игроком
                 buildWord += c;
             } else {
                 buildWord += "#";
             }
         }
-        userGuessChars = makeWord15Char(buildWord);                      // дописать до 15 символов
+        userGuessChars = makeWordMoreChar(buildWord, 15);                      // дописать до 15 символов
         return userGuessChars;
     }
 
