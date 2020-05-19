@@ -5,15 +5,12 @@ import java.util.Scanner;
 public class Homework1 {
     public static void main(String[] args) {
 
-        for (int i = 0; i < 50; i++) {
-            System.out.print(guessTheNumber(9));
-        }
         boolean continuePlay = true;
         Scanner sc = new Scanner(System.in);
         int numberTry = 3;
         int maxNumber = 9;
         while (continuePlay) {
-            System.out.println("Угадайте загаданное число от 0 до " + maxNumber + ".");
+            System.out.println("Угадайте число от 0 до " + maxNumber + ".");
             System.out.println("У Вас " + numberTry + " попытки.");
             boolean win = tryToGuess(sc, numberTry, maxNumber);
             sayResult(win);
