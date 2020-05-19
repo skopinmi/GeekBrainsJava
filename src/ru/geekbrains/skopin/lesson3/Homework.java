@@ -3,18 +3,20 @@ package ru.geekbrains.skopin.lesson3;
 import java.util.Scanner;
 
 public class Homework {
+    /*
+            Одинаковый код для всех задач
+            прочитал про Static :)
+    */
+    private static Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
-/*
-        Одинаковый код для всех задач
-*/
-        Scanner sc = new Scanner(System.in);
 
 /*      Задача №1
         Угадай число
 */
         int numberTry = 3;
         int maxNumber = 9;
-        gameGuessNumber(sc, numberTry,maxNumber);
+        gameGuessNumber(numberTry,maxNumber);
 
 /*
         Задача №2
@@ -32,10 +34,9 @@ public class Homework {
         System.out.println("Угадайте загаданное слово.");
         System.out.println("###############");
 //      игра №1 :
-        playGame(sc, thisWord);
+        playGame(thisWord);
 //      игра вариант №2 :
 //        playGame2(sc, thisWord);
-
 /*
         общий код для задач - завершение работы программы
  */
@@ -43,14 +44,14 @@ public class Homework {
         sc.close();
     }
 
-    private static void gameGuessNumber (Scanner sc, int numberTry, int maxNumber) {
+    private static void gameGuessNumber (int numberTry, int maxNumber) {             // угадай число
         boolean continuePlay = true;
         while (continuePlay) {
             System.out.println("Угадайте число от 0 до " + maxNumber + ".");
             System.out.println("У Вас " + numberTry + " попытки.");
-            boolean win = tryToGuess(sc, numberTry, maxNumber);
+            boolean win = tryToGuess(numberTry, maxNumber);
             sayResult(win);
-            continuePlay = isNextGame(sc);
+            continuePlay = isNextGame();
         }
     }
 
@@ -59,7 +60,7 @@ public class Homework {
         return number;
     }
 
-    private static boolean tryToGuess (Scanner sc, int numberTry, int maxNumber) { //логика игры результат победа да/нет
+    private static boolean tryToGuess (int numberTry, int maxNumber) { //логика игры результат победа да/нет
         boolean win = false;
         int number = guessTheNumber(maxNumber);
         for (int i = 0; i < numberTry; i++) {
@@ -79,13 +80,13 @@ public class Homework {
         System.out.println(win?"Вы угадали!":"Вы не угадали!");
     }
 
-    private static Boolean isNextGame (Scanner sc) { // запрос продолжать ли игру?
+    private static Boolean isNextGame () { // запрос продолжать ли игру?
         System.out.println("Попробуйте еще раз?");
         System.out.println("Повторить игру еще раз? 1 - да / 0 - нет.");
         return sc.nextInt() != 0; // получение ответа
     }
 
-    private static void playGame (Scanner sc, String thisWord) {                  // логика игры
+    private static void playGame (String thisWord) {                  // логика игры
         Boolean win;
         do {
             String userWord = sc.nextLine();                                           // слово игрока
@@ -99,7 +100,7 @@ public class Homework {
         } while (!win);
     }
 
-    private static void playGame2 (Scanner sc, String thisWord) {                   // игра
+    private static void playGame2 ( String thisWord) {                   // игра
         Boolean win;
         String userGuessChars = "###############";                               // строка с отгаданными символами
         do {
