@@ -14,37 +14,46 @@ public class Homework4 {
     public static Random random = new Random();
 
     public static void main(String[] args) {
+        boolean continueGame = true;
         System.out.println("Крестики - Нолики");
         makeGameField(SIZE);
         printGameField();
-        playGame();
+        do {
+            playGame();
+            System.out.println("Будем играть еще?");
+            System.out.println("Да 1 / Нет 0");
+            if (scanner.nextInt() == 0) {
+                continueGame = false;
+            }
+        } while (continueGame);
     }
     public static void playGame (){
         while (true) {
             System.out.println("Ваш ход :");
 
             moveOfHuman();
-            if (isGameFieldFull()) {
-                printGameField();
-                System.out.println("Ничья.");
-                break;
-            }
             if (isWin(DOT_X)) {
                 System.out.println("Вы выиграли.");
                 break;
             }
-            printGameField();
-            System.out.println("Ход компьютера :");
-            moveOfAi();
             if (isGameFieldFull()) {
                 printGameField();
                 System.out.println("Ничья.");
                 break;
             }
+            printGameField();
+            System.out.println("Ход компьютера :");
+            moveOfAi2();
             if (isWin(DOT_O)) {
                 System.out.println("Компьютер выиграл.");
                 break;
             }
+            if (isGameFieldFull()) {
+                printGameField();
+                System.out.println("Ничья.");
+                break;
+            }
+
             printGameField();
         }
     }
@@ -132,6 +141,66 @@ public class Homework4 {
     public static boolean isSpaceValid (int x, int y) {
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) return false;
         if (gameField[x][y] == DOT_EMPTY) return true;
+        return false;
+    }
+
+    public static void moveOfAi2 (){                      // интеллект предупреждение проигрыша по горизонтали и вертикали
+        int x;
+        int y;
+        int xForMove = - 1;
+        int yForMove = - 1;
+        for (int i = 0; i < SIZE; i++) {
+            int countDotVertical = 0;
+            int countDotHorizontal = 0;
+            for (int ii = 0; ii < SIZE; ii++) {
+                if (gameField[i][ii] == DOT_X) {
+                    countDotHorizontal++;
+                }
+                if (countDotHorizontal == (DOTS_TO_WIN - 1) && !isHorizontalFull(i)) {
+                    xForMove = i;
+                    break;
+                }
+                if (gameField[ii][i] == DOT_X) {
+                    countDotVertical++;
+                }
+                if (countDotVertical == (DOTS_TO_WIN - 1) && !isVerticalFull(i)) {
+                    yForMove = i;
+                    break;
+                }
+            }
+        }
+        do {
+            if (xForMove != -1 && yForMove == -1) {
+                x = xForMove;
+                y = random.nextInt(SIZE);
+            } else if ( xForMove == -1 && yForMove != -1 ) {
+                y = yForMove;
+                x = random.nextInt(SIZE);
+            } else {
+                y = random.nextInt(SIZE);
+                x = random.nextInt(SIZE);
+            }
+        } while (!isSpaceValid( x, y ));
+        gameField [x][y] = DOT_O;
+    }
+    public static boolean isHorizontalFull (int horizontal) {   // проверка горизонтали на заполненность
+        int countFullSpace = 0;
+        for (int i = 0; i < SIZE; i++) {
+            if (gameField[horizontal][i] != DOT_EMPTY) {
+                countFullSpace++;
+            }
+            if (countFullSpace == SIZE) return true;
+        }
+        return false;
+    }
+    public static boolean isVerticalFull (int vertical) {      // проверка вертикали на заполненность
+        int countFullSpace = 0;
+        for (int i = 0; i < SIZE; i++) {
+            if (gameField[i][vertical] != DOT_EMPTY) {
+                countFullSpace++;
+            }
+            if (countFullSpace == SIZE) return true;
+        }
         return false;
     }
 }
