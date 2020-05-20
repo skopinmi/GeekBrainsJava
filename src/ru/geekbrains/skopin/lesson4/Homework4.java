@@ -28,10 +28,11 @@ public class Homework4 {
             }
         } while (continueGame);
     }
-    public static void playGame (){
+    public static void playGame (){                             // последовательность ходов и оформление игры
         while (true) {
             System.out.println("Ваш ход :");
             moveOfHuman();
+            System.out.println("");
             printGameField();
             if (isWin(DOT_X)) {
                 System.out.println("Вы выиграли.");
@@ -42,6 +43,7 @@ public class Homework4 {
                 break;
             }
             System.out.println("Ход компьютера :");
+            System.out.println("");
             moveOfAi2();
             printGameField();
             if (isWin(DOT_O)) {
@@ -155,10 +157,10 @@ public class Homework4 {
     public static void moveOfAi2 (){                        // интеллект предупреждение проигрыша по горизонтали и вертикали
         int x;
         int y;
-        int xForMoveAttack = getXHorizontalOneMoveToWin(DOT_O);  // координата горизонтали предполагаемого выигрыша
-        int yForMoveAttack = getYVerticalOneMoveToWin(DOT_O);    // координата вертикали предполагаемого выигрыша
-        int xForMoveProtection = getXHorizontalOneMoveToWin(DOT_X);  // координата горизонтали предполагаемого проигрыша
-        int yForMoveProtection = getYVerticalOneMoveToWin(DOT_X);    // координата вертикали предполагаемого проигрыша
+        int xForMoveAttack = getHorizontal(DOT_O);       // координата горизонтали предполагаемого выигрыша
+        int yForMoveAttack = getVertical(DOT_O);         // координата вертикали предполагаемого выигрыша
+        int xForMoveProtection = getHorizontal(DOT_X);   // координата горизонтали предполагаемого проигрыша
+        int yForMoveProtection = getVertical(DOT_X);     // координата вертикали предполагаемого проигрыша
         int xDiagonalMoveAttack = getXInDiagonal(DOT_O);           // координата Х в диагонали предполагаемого выигрыша
         int yDiagonalMoveAttack = getYInDiagonal(DOT_O);           // координата У в диагонали предполагаемого выигрыша
         int xDiagonalProtection = getXInDiagonal(DOT_X);           // координата Х в диагонали предполагаемого проигрыша
@@ -170,7 +172,7 @@ public class Homework4 {
             } else if (xDiagonalProtection != - 1 && yDiagonalProtection != - 1){
                 x = xDiagonalProtection;
                 y = yDiagonalProtection;
-            } else if (xForMoveAttack != -1 && yForMoveAttack == -1) {         // исключение случая когда образовалась "ВИЛКА" - заведомый проигрыш
+            } else if (xForMoveAttack != -1 && yForMoveAttack == -1) {              // исключение случая когда образовалась "ВИЛКА" - заведомый проигрыш
                 x = xForMoveAttack;                               //
                 y = random.nextInt(SIZE);
             } else if ( xForMoveAttack == -1 && yForMoveAttack != -1 ) {
@@ -209,7 +211,7 @@ public class Homework4 {
         }
         return false;
     }
-    public static int getYVerticalOneMoveToWin (char checkDot ){
+    public static int getVertical (char checkDot ){
         int yForMove = - 1;                               // координата вертикали  где проверяемых символов DOT_TO_WIN - 1
         for (int i = 0; i < SIZE; i++) {
             int countDotVertical = 0;                        // счет символов  по вертикалям
@@ -225,7 +227,7 @@ public class Homework4 {
         }
         return  yForMove;
     }
-    public static int getXHorizontalOneMoveToWin (char checkDot ){
+    public static int getHorizontal (char checkDot ){
 
         int xForMove = - 1;                               // координата горизонтали где проверяемых символов DOT_TO_WIN - 1
         for (int i = 0; i < SIZE; i++) {
