@@ -16,9 +16,9 @@ public class Homework4 {
     public static void main(String[] args) {
         boolean continueGame = true;
         System.out.println("Крестики - Нолики");
-        makeGameField(SIZE);
-        printGameField();
         do {
+            makeGameField(SIZE);
+            printGameField();
             playGame();
             System.out.println("Будем играть еще?");
             System.out.println("Да 1 / Нет 0");
@@ -58,14 +58,19 @@ public class Homework4 {
         }
     }
     public static boolean isWin(char symbol) {
-        /* проверка циклами*/
+        /* проверка циклами
+         *  проводится счет указанных в аргументах символов
+         *  по горизонталям, вертикалям и диагоналям при
+         *  получении результата равного DOT_TO_WIN
+         *  возвращает true
+         *  */
         int countDotDiagonal1 = 0;
         int countDotDiagonal2 = 0;
         int countDotVertical;
         int countDotHorizontal;
         for (int i = 0; i < SIZE; i++) {
-            countDotVertical = 0;
-            countDotHorizontal = 0;
+            countDotVertical = 0;                    //  обнуление счетчиков вертикалей и диагоналей
+            countDotHorizontal = 0;                  //
             for (int ii = 0; ii < SIZE; ii++) {
                 if (gameField[i][ii] == symbol) {
                     countDotHorizontal++;
@@ -73,7 +78,8 @@ public class Homework4 {
                 if (gameField[ii][i] == symbol) {
                     countDotVertical++;
                 }
-                if (countDotHorizontal == DOTS_TO_WIN || countDotVertical == DOTS_TO_WIN) { return true; }
+                if (countDotHorizontal == DOTS_TO_WIN || countDotVertical == DOTS_TO_WIN) {
+                    return true; }
             }
             if(gameField[i][i] == symbol) {
                 countDotDiagonal1++;
@@ -81,8 +87,10 @@ public class Homework4 {
             if (gameField[i][gameField.length - 1 - i] == symbol) {
                 countDotDiagonal2++;
             }
+            if (countDotDiagonal1 == DOTS_TO_WIN || countDotDiagonal2 == DOTS_TO_WIN) {
+                return true;
+            }
         }
-        if (countDotDiagonal1 == DOTS_TO_WIN || countDotDiagonal2 == DOTS_TO_WIN) {return true;}
         return false;
     }
     public static boolean isGameFieldFull () {
@@ -118,9 +126,9 @@ public class Homework4 {
     public static void moveOfHuman () {
         int x;
         int y;
-        boolean rightPutIn = true;
+        boolean rightPutIn = true;             // ошибка при введении координат true / false
         do {
-            if (rightPutIn == false) {
+            if (!rightPutIn) {
                 System.out.println("Вероятно Вы ошиблись, повторите ход: ");
             }
             x = scanner.nextInt() - 1;
@@ -147,24 +155,24 @@ public class Homework4 {
     public static void moveOfAi2 (){                      // интеллект предупреждение проигрыша по горизонтали и вертикали
         int x;
         int y;
-        int xForMove = - 1;
-        int yForMove = - 1;
+        int xForMove = - 1;                               // координата горизонтали предполагаемого проигрыша
+        int yForMove = - 1;                               // координата вертикали предполагаемого проигрыша
         for (int i = 0; i < SIZE; i++) {
-            int countDotVertical = 0;
-            int countDotHorizontal = 0;
+            int countDotVertical = 0;                        // счет символов противника по вертикалям
+            int countDotHorizontal = 0;                      // счет символов противника по горизонталям
             for (int ii = 0; ii < SIZE; ii++) {
                 if (gameField[i][ii] == DOT_X) {
                     countDotHorizontal++;
                 }
-                if (countDotHorizontal == (DOTS_TO_WIN - 1) && !isHorizontalFull(i)) {
-                    xForMove = i;
+                if (countDotHorizontal == (DOTS_TO_WIN - 1) && !isHorizontalFull(i)) { // символов противника в горизонтали на 1 меньше
+                    xForMove = i;                                                      // до его победы + горизонталь не заполнена полностью
                     break;
                 }
                 if (gameField[ii][i] == DOT_X) {
                     countDotVertical++;
                 }
-                if (countDotVertical == (DOTS_TO_WIN - 1) && !isVerticalFull(i)) {
-                    yForMove = i;
+                if (countDotVertical == (DOTS_TO_WIN - 1) && !isVerticalFull(i)) {     // символов противника в вертикаль на 1 меньше
+                    yForMove = i;                                                      // до его победы + вертикаль не заполнена полностью
                     break;
                 }
             }
@@ -183,7 +191,7 @@ public class Homework4 {
         } while (!isSpaceValid( x, y ));
         gameField [x][y] = DOT_O;
     }
-    public static boolean isHorizontalFull (int horizontal) {   // проверка горизонтали на заполненность
+    public static boolean isHorizontalFull (int horizontal) {   // проверка горизонтали на полную заполненность
         int countFullSpace = 0;
         for (int i = 0; i < SIZE; i++) {
             if (gameField[horizontal][i] != DOT_EMPTY) {
@@ -193,7 +201,7 @@ public class Homework4 {
         }
         return false;
     }
-    public static boolean isVerticalFull (int vertical) {      // проверка вертикали на заполненность
+    public static boolean isVerticalFull (int vertical) {      // проверка вертикали на полную заполненность
         int countFullSpace = 0;
         for (int i = 0; i < SIZE; i++) {
             if (gameField[i][vertical] != DOT_EMPTY) {
