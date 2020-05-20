@@ -52,28 +52,28 @@ public class Homework4 {
         /* проверка циклами*/
         int countDotDiagonal1 = 0;
         int countDotDiagonal2 = 0;
-        int countDotVertical = 0;
-        int countDotHorizontal = 0;
-        for (int i = 0; i < SIZE; i ++) {
-            for (int ii = 0; ii < SIZE; ii ++) {
+        int countDotVertical;
+        int countDotHorizontal;
+        for (int i = 0; i < SIZE; i++) {
+            countDotVertical = 0;
+            countDotHorizontal = 0;
+            for (int ii = 0; ii < SIZE; ii++) {
                 if (gameField[i][ii] == symbol) {
                     countDotHorizontal++;
                 }
-                if(gameField[ii][i] == symbol) {
+                if (gameField[ii][i] == symbol) {
                     countDotVertical++;
                 }
-                if (gameField[ii][ii] == symbol) {
-                    countDotDiagonal1++;
-                }
-                if (gameField[i][gameField[i].length - 1 - ii] == symbol) {
-                    countDotDiagonal2++;
-                }
+                if (countDotHorizontal == DOTS_TO_WIN || countDotVertical == DOTS_TO_WIN) { return true; }
+            }
+            if(gameField[i][i] == symbol) {
+                countDotDiagonal1++;
+            }
+            if (gameField[i][gameField.length - 1 - i] == symbol) {
+                countDotDiagonal2++;
             }
         }
-        if(countDotHorizontal == DOTS_TO_WIN || countDotVertical == DOTS_TO_WIN
-                || countDotDiagonal1 == DOTS_TO_WIN||countDotDiagonal2 ==DOTS_TO_WIN) {
-            return true;
-        }
+        if (countDotDiagonal1 == DOTS_TO_WIN || countDotDiagonal2 == DOTS_TO_WIN) {return true;}
         return false;
     }
     public static boolean isGameFieldFull () {
@@ -109,10 +109,15 @@ public class Homework4 {
     public static void moveOfHuman () {
         int x;
         int y;
+        boolean rightPutIn = true;
         do {
+            if (rightPutIn == false) {
+                System.out.println("Вероятно Вы ошиблись, повторите ход: ");
+            }
             x = scanner.nextInt() - 1;
             y = scanner.nextInt() - 1;
-        } while (!isSpaceValid( x, y ));
+            rightPutIn = isSpaceValid(x, y);
+        } while (!rightPutIn);
         gameField [x][y] = DOT_X;
     }
     public static void moveOfAi (){
