@@ -13,9 +13,9 @@ public class Try {
 
     public static void main(String[] args) {
         gameField = new char[SIZE][SIZE];
-        gameField[0][0] = 'O';
+        gameField[0][0] = '*';
         gameField[0][1] = 'O';
-        gameField[0][2] = 'O';
+        gameField[0][2] = 'X';
         gameField[1][0] = '*';
         gameField[1][1] = 'O';
         gameField[1][2] = 'O';
@@ -23,46 +23,11 @@ public class Try {
         gameField[2][1] = '*';
         gameField[2][2] = 'O';
         printGameField();
-        System.out.println(isHorizontalFull(0));
-        System.out.println(isVerticalFull(0));
+        System.out.println(isDiagonal1OneMoveToFull(DOT_O));
+        System.out.println(isDiagonal2OneMoveToFull(DOT_O));
+        System.out.println(getXInDiagonal(DOT_O));
+        System.out.println(getYInDiagonal(DOT_O));
     }
-
-    public static int checkVerticalOneMoveToWin (char checkDot ){
-        int yForMove = - 1;                               // координата вертикали предполагаемого проигрыша
-        for (int i = 0; i < SIZE; i++) {
-            int countDotVertical = 0;                        // счет символов противника по вертикалям
-            for (int ii = 0; ii < SIZE; ii++) {
-                if (gameField[ii][i] == checkDot) {
-                    countDotVertical++;
-                }
-                if (countDotVertical == (DOTS_TO_WIN - 1) && !isVerticalFull(i)) {     // символов противника в вертикаль на 1 меньше
-                    yForMove = i;                                                      // до его победы + вертикаль не заполнена полностью
-                    break;
-                }
-            }
-        }
-        return  yForMove;
-    }
-    public static int checkHorizontalOneMoveToWin (char checkDot ){
-
-        int xForMove = - 1;                               // координата горизонтали предполагаемого проигрыша
-        for (int i = 0; i < SIZE; i++) {
-            int countDotHorizontal = 0;                      // счет символов противника по горизонталям
-            for (int ii = 0; ii < SIZE; ii++) {
-                if (gameField[i][ii] == checkDot) {
-                    countDotHorizontal++;
-                }
-                if (countDotHorizontal == (DOTS_TO_WIN - 1) && !isHorizontalFull(i)) { // символов противника в горизонтали на 1 меньше
-                    xForMove = i;                                                      // до его победы + горизонталь не заполнена полностью
-                    break;
-                }
-            }
-        }
-        return  xForMove;
-    }
-
-
-
     public static void printGameField() {
         for (int i = 0; i <= SIZE; i++) {
             System.out.print(i + " ");
@@ -77,30 +42,90 @@ public class Try {
         }
         System.out.println();
     }
-    public static boolean isHorizontalFull (int horizontal) {
+
+    public static int getXInDiagonal(char symbol){    // получение Х в диагонали
+        int x = - 1;
+        if(isDiagonal1OneMoveToFull(symbol)) {
+            for (int i = 0; i < SIZE; i++) {
+                if (gameField[i][i] == DOT_EMPTY) {
+                    return i;
+                }
+            }
+        } else if (isDiagonal2OneMoveToFull(symbol)) {
+            for (int i = 0; i < SIZE; i++) {
+                if (gameField[i][SIZE - 1 - i] == DOT_EMPTY) {
+                    return i;
+                }
+            }
+        }
+        return x;
+    }
+    public static int getYInDiagonal(char symbol) {            // получение y в диагонали
+        int y = -1;
+        if (isDiagonal1OneMoveToFull(symbol)) {
+            for (int i = 0; i < SIZE; i++) {
+                if (gameField[i][i] == DOT_EMPTY) {
+                    return i;
+                }
+            }
+        } else if (isDiagonal2OneMoveToFull(symbol)) {
+            for (int i = 0; i < SIZE; i++) {
+                if (gameField[i][SIZE - 1 - i] == DOT_EMPTY) {
+                    return (SIZE - 1 - i);
+                }
+            }
+        }
+        return y;
+    }
+
+    public static boolean isDiagonal1OneMoveToFull (char symbol ) {  // есть ли в дигонали  символов DOT_TO_WIN - 1
+        int countDotDiagonal1 = 0;
+        for (int i = 0; i < SIZE; i++) {
+            if (gameField[i][i] == symbol) {
+                countDotDiagonal1 ++;
+            }
+            if (countDotDiagonal1 == (DOTS_TO_WIN - 1) && !isDiagonal1Full()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isDiagonal2OneMoveToFull (char symbol) {  // есть ли в дигонали  символов DOT_TO_WIN - 1
+        int countDotDiagonal2 = 0;
+        for (int i = 0; i < SIZE; i++) {
+            if (gameField[i][SIZE - 1 - i] == symbol) {
+                countDotDiagonal2++;
+            }
+            if (countDotDiagonal2 == (DOTS_TO_WIN - 1) && !isDiagonal2Full()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isDiagonal1Full () {                     // проверка диагонали 1 на полную заполненность
         int countFullSpace = 0;
         for (int i = 0; i < SIZE; i++) {
 
-            if (gameField[horizontal][i] != DOT_EMPTY) {
+            if (gameField[i][i] != DOT_EMPTY) {
+                countFullSpace++;
+            }
+            if (countFullSpace == SIZE) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isDiagonal2Full () {                     // проверка диагонали 2 на полную заполненность
+        int countFullSpace = 0;
+        for (int i = 0; i < SIZE; i++) {
+            if (gameField[i][SIZE - 1 - i] != DOT_EMPTY) {
                 countFullSpace++;
             }
             if (countFullSpace == SIZE) return true;
         }
         return false;
     }
-    public static boolean isVerticalFull (int vertical) {
-        int countFullSpace = 0;
-        for (int i = 0; i < SIZE; i++) {
-
-            if (gameField[i][vertical] != DOT_EMPTY) {
-                countFullSpace++;
-            }
-            if (countFullSpace == SIZE) return true;
-        }
-        return false;
-    }
-
-
 
 
 }

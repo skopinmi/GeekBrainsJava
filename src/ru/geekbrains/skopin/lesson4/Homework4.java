@@ -20,6 +20,7 @@ public class Homework4 {
             makeGameField(SIZE);
             printGameField();
             playGame();
+            System.out.println("");
             System.out.println("Будем играть еще?");
             System.out.println("Да 1 / Нет 0");
             if (scanner.nextInt() == 0) {
@@ -31,6 +32,7 @@ public class Homework4 {
         while (true) {
             System.out.println("Ваш ход :");
             moveOfHuman();
+            printGameField();
             if (isWin(DOT_X)) {
                 System.out.println("Вы выиграли.");
                 break;
@@ -39,9 +41,9 @@ public class Homework4 {
                 System.out.println("Ничья.");
                 break;
             }
-            printGameField();
             System.out.println("Ход компьютера :");
             moveOfAi2();
+            printGameField();
             if (isWin(DOT_O)) {
                 System.out.println("Компьютер выиграл.");
                 break;
@@ -50,9 +52,7 @@ public class Homework4 {
                 System.out.println("Ничья.");
                 break;
             }
-            printGameField();
         }
-        printGameField();
     }
     public static boolean isWin(char symbol) {
         /* проверка циклами
@@ -148,20 +148,33 @@ public class Homework4 {
         if (gameField[x][y] == DOT_EMPTY) return true;
         return false;
     }
+/*
+        Далее методы отвечающие за AI
 
+ */
     public static void moveOfAi2 (){                        // интеллект предупреждение проигрыша по горизонтали и вертикали
         int x;
         int y;
-        int xForMoveAttak = checkHorizontalOneMoveToWin(DOT_O);  // координата горизонтали предполагаемого выигрыша
-        int yForMoveAttak = checkVerticalOneMoveToWin(DOT_O);    // координата вертикали предполагаемого выигрыша
-        int xForMoveProtection = checkHorizontalOneMoveToWin(DOT_X);  // координата горизонтали предполагаемого проигрыша
-        int yForMoveProtection = checkVerticalOneMoveToWin(DOT_X);    // координата вертикали предполагаемого проигрыша
+        int xForMoveAttack = getXHorizontalOneMoveToWin(DOT_O);  // координата горизонтали предполагаемого выигрыша
+        int yForMoveAttack = getYVerticalOneMoveToWin(DOT_O);    // координата вертикали предполагаемого выигрыша
+        int xForMoveProtection = getXHorizontalOneMoveToWin(DOT_X);  // координата горизонтали предполагаемого проигрыша
+        int yForMoveProtection = getYVerticalOneMoveToWin(DOT_X);    // координата вертикали предполагаемого проигрыша
+        int xDiagonalMoveAttack = getXInDiagonal(DOT_O);           // координата Х в диагонали предполагаемого выигрыша
+        int yDiagonalMoveAttack = getYInDiagonal(DOT_O);           // координата У в диагонали предполагаемого выигрыша
+        int xDiagonalProtection = getXInDiagonal(DOT_X);           // координата Х в диагонали предполагаемого проигрыша
+        int yDiagonalProtection = getYInDiagonal(DOT_X);            // координата У в диагонали предполагаемого проигрыша
         do {
-            if (xForMoveAttak != -1 && yForMoveAttak == -1) {         // исключение случая когда образовалась "ВИЛКА" - заведомый проигрыш
-                x = xForMoveAttak;                               //
+            if (xDiagonalMoveAttack != - 1 && yDiagonalMoveAttack != - 1) {
+                x = xDiagonalMoveAttack;
+                y = yDiagonalMoveAttack;
+            } else if (xDiagonalProtection != - 1 && yDiagonalProtection != - 1){
+                x = xDiagonalProtection;
+                y = yDiagonalProtection;
+            } else if (xForMoveAttack != -1 && yForMoveAttack == -1) {         // исключение случая когда образовалась "ВИЛКА" - заведомый проигрыш
+                x = xForMoveAttack;                               //
                 y = random.nextInt(SIZE);
-            } else if ( xForMoveAttak == -1 && yForMoveAttak != -1 ) {
-                y = yForMoveAttak;
+            } else if ( xForMoveAttack == -1 && yForMoveAttack != -1 ) {
+                y = yForMoveAttack;
                 x = random.nextInt(SIZE);
             } else if (xForMoveProtection != -1 && yForMoveProtection == -1) {         // исключение случая когда образовалась "ВИЛКА" - заведомый проигрыш
                 x = xForMoveProtection;                               //
@@ -196,7 +209,7 @@ public class Homework4 {
         }
         return false;
     }
-    public static int checkVerticalOneMoveToWin (char checkDot ){
+    public static int getYVerticalOneMoveToWin (char checkDot ){
         int yForMove = - 1;                               // координата вертикали  где проверяемых символов DOT_TO_WIN - 1
         for (int i = 0; i < SIZE; i++) {
             int countDotVertical = 0;                        // счет символов  по вертикалям
@@ -212,7 +225,7 @@ public class Homework4 {
         }
         return  yForMove;
     }
-    public static int checkHorizontalOneMoveToWin (char checkDot ){
+    public static int getXHorizontalOneMoveToWin (char checkDot ){
 
         int xForMove = - 1;                               // координата горизонтали где проверяемых символов DOT_TO_WIN - 1
         for (int i = 0; i < SIZE; i++) {
@@ -228,5 +241,88 @@ public class Homework4 {
             }
         }
         return  xForMove;
+    }
+    public static int getXInDiagonal(char symbol){    // получение Х в диагонали
+        int x = - 1;
+        if(isDiagonal1OneMoveToFull(symbol)) {
+            for (int i = 0; i < SIZE; i++) {
+                if (gameField[i][i] == DOT_EMPTY) {
+                    return i;
+                }
+            }
+        } else if (isDiagonal2OneMoveToFull(symbol)) {
+            for (int i = 0; i < SIZE; i++) {
+                if (gameField[i][SIZE - 1 - i] == DOT_EMPTY) {
+                    return i;
+                }
+            }
+        }
+        return x;
+    }
+    public static int getYInDiagonal(char symbol) {            // получение y в диагонали
+        int y = -1;
+        if (isDiagonal1OneMoveToFull(symbol)) {
+            for (int i = 0; i < SIZE; i++) {
+                if (gameField[i][i] == DOT_EMPTY) {
+                    return i;
+                }
+            }
+        } else if (isDiagonal2OneMoveToFull(symbol)) {
+            for (int i = 0; i < SIZE; i++) {
+                if (gameField[i][SIZE - 1 - i] == DOT_EMPTY) {
+                    return (SIZE - 1 - i);
+                }
+            }
+        }
+        return y;
+    }
+
+    public static boolean isDiagonal1OneMoveToFull (char symbol ) {  // есть ли в дигонали  символов DOT_TO_WIN - 1
+        int countDotDiagonal1 = 0;
+        for (int i = 0; i < SIZE; i++) {
+            if (gameField[i][i] == symbol) {
+                countDotDiagonal1 ++;
+            }
+            if (countDotDiagonal1 == (DOTS_TO_WIN - 1) && !isDiagonal1Full()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isDiagonal2OneMoveToFull (char symbol) {  // есть ли в дигонали  символов DOT_TO_WIN - 1
+        int countDotDiagonal2 = 0;
+        for (int i = 0; i < SIZE; i++) {
+            if (gameField[i][SIZE - 1 - i] == symbol) {
+                countDotDiagonal2++;
+            }
+            if (countDotDiagonal2 == (DOTS_TO_WIN - 1) && !isDiagonal2Full()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isDiagonal1Full () {                     // проверка диагонали 1 на полную заполненность
+        int countFullSpace = 0;
+        for (int i = 0; i < SIZE; i++) {
+
+            if (gameField[i][i] != DOT_EMPTY) {
+                countFullSpace++;
+            }
+            if (countFullSpace == SIZE) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isDiagonal2Full () {                     // проверка диагонали 2 на полную заполненность
+        int countFullSpace = 0;
+        for (int i = 0; i < SIZE; i++) {
+            if (gameField[i][SIZE - 1 - i] != DOT_EMPTY) {
+                countFullSpace++;
+            }
+            if (countFullSpace == SIZE) return true;
+        }
+        return false;
     }
 }
