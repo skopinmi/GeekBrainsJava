@@ -44,6 +44,12 @@ public class Homework4 {
             }
             System.out.println("Ход компьютера :");
             System.out.println("");
+    /*
+            moveOfAi()  - ход совершается рандомно
+            moveOfAi2() - ход с элементами искусственного интеллекта,
+            анализ возможных выигрышных и проигрышных ходов
+     */
+//            moveOfAi();
             moveOfAi2();
             printGameField();
             if (isWin(DOT_O)) {
@@ -59,6 +65,7 @@ public class Homework4 {
     public static boolean isWin(char symbol) {
         /* проверка циклами
          *  проводится счет указанных в аргументах символов
+         *  в игровом поле стоящих в ряд
          *  по горизонталям, вертикалям и диагоналям при
          *  получении результата равного DOT_TO_WIN
          *  возвращает true
@@ -73,18 +80,26 @@ public class Homework4 {
             for (int ii = 0; ii < SIZE; ii++) {
                 if (gameField[i][ii] == symbol) {
                     countDotHorizontal++;
-                }
+                } else {
+                    countDotHorizontal = 0;           //сброс на ноль для счета фишек только в один ряд
+                }                                     //для случеев когда SIZE > DOT_TO_WIN
                 if (gameField[ii][i] == symbol) {
                     countDotVertical++;
+                } else {
+                    countDotVertical = 0;              //сброс на ноль для счета фишек только в один ряд
                 }
                 if (countDotHorizontal == DOTS_TO_WIN || countDotVertical == DOTS_TO_WIN) {
                     return true; }
             }
             if(gameField[i][i] == symbol) {
                 countDotDiagonal1++;
+            } else {
+                countDotDiagonal1 = 0;                  //сброс на ноль для счета фишек только в один ряд
             }
             if (gameField[i][gameField.length - 1 - i] == symbol) {
                 countDotDiagonal2++;
+            } else {
+                countDotDiagonal2 = 0;                   //сброс на ноль для счета фишек только в один ряд
             }
             if (countDotDiagonal1 == DOTS_TO_WIN || countDotDiagonal2 == DOTS_TO_WIN) {
                 return true;
@@ -151,8 +166,12 @@ public class Homework4 {
         return false;
     }
 /*
-        Далее методы отвечающие за AI
+        Далее идут методы отвечающие за AI
 
+        алгоритм хорошо работает при условии
+        победы при полном наборе фишек по диагонали,
+        вертикали или горизонтали
+        (работает при SIZE = DOT_TO_WIN)
  */
     public static void moveOfAi2 (){                        // интеллект предупреждение проигрыша по горизонтали и вертикали
         int x;
@@ -166,20 +185,30 @@ public class Homework4 {
         int xDiagonalProtection = getXInDiagonal(DOT_X);           // координата Х в диагонали предполагаемого проигрыша
         int yDiagonalProtection = getYInDiagonal(DOT_X);            // координата У в диагонали предполагаемого проигрыша
         do {
+    /*
+    *       Блок выбора дальнейшего хода
+    *       преимущество за ходом с победой
+    *       далее ход с предупреждением проигрыша
+    *       начало выбора с диагоналей
+    *       далее горизонталь и вертикаль
+    *       по горизонталям и ретикалям дается
+    *       одна координата вторая верно подбирается рандомно через метод isSpaceValid
+    *
+    * */
             if (xDiagonalMoveAttack != - 1 && yDiagonalMoveAttack != - 1) {
                 x = xDiagonalMoveAttack;
                 y = yDiagonalMoveAttack;
             } else if (xDiagonalProtection != - 1 && yDiagonalProtection != - 1){
                 x = xDiagonalProtection;
                 y = yDiagonalProtection;
-            } else if (xForMoveAttack != -1 && yForMoveAttack == -1) {              // исключение случая когда образовалась "ВИЛКА" - заведомый проигрыш
-                x = xForMoveAttack;                               //
+            } else if (xForMoveAttack != -1 && yForMoveAttack == -1) {           // исключение случая когда образовалась "ВИЛКА" - заведомый проигрыш
+                x = xForMoveAttack;                                              //
                 y = random.nextInt(SIZE);
             } else if ( xForMoveAttack == -1 && yForMoveAttack != -1 ) {
                 y = yForMoveAttack;
                 x = random.nextInt(SIZE);
-            } else if (xForMoveProtection != -1 && yForMoveProtection == -1) {         // исключение случая когда образовалась "ВИЛКА" - заведомый проигрыш
-                x = xForMoveProtection;                               //
+            } else if (xForMoveProtection != -1 && yForMoveProtection == -1) {    // исключение случая когда образовалась "ВИЛКА" - заведомый проигрыш
+                x = xForMoveProtection;                                           //
                 y = random.nextInt(SIZE);
             } else if ( xForMoveProtection == -1 && yForMoveProtection != -1 ) {
                 y = yForMoveProtection;
@@ -261,7 +290,7 @@ public class Homework4 {
         }
         return x;
     }
-    public static int getYInDiagonal(char symbol) {            // получение y в диагонали
+    public static int getYInDiagonal(char symbol) {            // получение У в диагонали
         int y = -1;
         if (isDiagonal1OneMoveToFull(symbol)) {
             for (int i = 0; i < SIZE; i++) {
@@ -279,7 +308,7 @@ public class Homework4 {
         return y;
     }
 
-    public static boolean isDiagonal1OneMoveToFull (char symbol ) {  // есть ли в дигонали  символов DOT_TO_WIN - 1
+    public static boolean isDiagonal1OneMoveToFull (char symbol ) {  // есть ли в диагонали  символов DOT_TO_WIN - 1
         int countDotDiagonal1 = 0;
         for (int i = 0; i < SIZE; i++) {
             if (gameField[i][i] == symbol) {
@@ -292,7 +321,7 @@ public class Homework4 {
         return false;
     }
 
-    public static boolean isDiagonal2OneMoveToFull (char symbol) {  // есть ли в дигонали  символов DOT_TO_WIN - 1
+    public static boolean isDiagonal2OneMoveToFull (char symbol) {  // есть ли в диагонали  символов DOT_TO_WIN - 1
         int countDotDiagonal2 = 0;
         for (int i = 0; i < SIZE; i++) {
             if (gameField[i][SIZE - 1 - i] == symbol) {
