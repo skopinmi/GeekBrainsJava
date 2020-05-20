@@ -27,6 +27,40 @@ public class Try {
         System.out.println(isVerticalFull(0));
     }
 
+    public static int checkVerticalOneMoveToWin (char checkDot ){
+        int yForMove = - 1;                               // координата вертикали предполагаемого проигрыша
+        for (int i = 0; i < SIZE; i++) {
+            int countDotVertical = 0;                        // счет символов противника по вертикалям
+            for (int ii = 0; ii < SIZE; ii++) {
+                if (gameField[ii][i] == checkDot) {
+                    countDotVertical++;
+                }
+                if (countDotVertical == (DOTS_TO_WIN - 1) && !isVerticalFull(i)) {     // символов противника в вертикаль на 1 меньше
+                    yForMove = i;                                                      // до его победы + вертикаль не заполнена полностью
+                    break;
+                }
+            }
+        }
+        return  yForMove;
+    }
+    public static int checkHorizontalOneMoveToWin (char checkDot ){
+
+        int xForMove = - 1;                               // координата горизонтали предполагаемого проигрыша
+        for (int i = 0; i < SIZE; i++) {
+            int countDotHorizontal = 0;                      // счет символов противника по горизонталям
+            for (int ii = 0; ii < SIZE; ii++) {
+                if (gameField[i][ii] == checkDot) {
+                    countDotHorizontal++;
+                }
+                if (countDotHorizontal == (DOTS_TO_WIN - 1) && !isHorizontalFull(i)) { // символов противника в горизонтали на 1 меньше
+                    xForMove = i;                                                      // до его победы + горизонталь не заполнена полностью
+                    break;
+                }
+            }
+        }
+        return  xForMove;
+    }
+
 
 
     public static void printGameField() {
