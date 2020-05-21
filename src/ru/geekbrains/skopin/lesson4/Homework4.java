@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 public class Homework4 {
     public static char[][] gameField;
-    public static final int SIZE = 3;
-    public static final int DOTS_TO_WIN = 3;
+    public static final int SIZE = 5;
+    public static final int DOTS_TO_WIN = 4;
     public static final char DOT_O = 'O';
     public static final char DOT_X = 'X';
     public static  char DOT_EMPTY = '*';
@@ -65,8 +65,8 @@ public class Homework4 {
     public static boolean isWin(char symbol) {
         /* проверка циклами
          *  проводится счет указанных в аргументах символов
-         *  в игровом поле стоящих в ряд
-         *  по горизонталям, вертикалям и диагоналям при
+         *  в игровом поле стоящих в ряд  (не учитывает все диагональные варианты)
+         *  (СТРОГО) по горизонталям, вертикалям и диагоналям при
          *  получении результата равного DOT_TO_WIN
          *  возвращает true
          *  */
@@ -171,11 +171,14 @@ public class Homework4 {
         алгоритм хорошо работает при условии
         победы при полном наборе фишек по диагонали,
         вертикали или горизонтали
+        оценнка текущего своего хода и следующего хода противника
         (работает при SIZE = DOT_TO_WIN)
  */
     public static void moveOfAi2 (){                        // интеллект предупреждение проигрыша по горизонтали и вертикали
         int x;
         int y;
+        int xFirstMove = getXYFirstMove();                    // дополнительные координаты для увеличения уровня "ума"
+        int yFirstMove = getXYFirstMove();                    //
         int xForMoveAttack = getHorizontal(DOT_O);       // координата горизонтали предполагаемого выигрыша
         int yForMoveAttack = getVertical(DOT_O);         // координата вертикали предполагаемого выигрыша
         int xForMoveProtection = getHorizontal(DOT_X);   // координата горизонтали предполагаемого проигрыша
@@ -192,13 +195,13 @@ public class Homework4 {
     *       начало выбора с диагоналей
     *       далее горизонталь и вертикаль
     *       по горизонталям и ретикалям дается
-    *       одна координата вторая верно подбирается рандомно через метод isSpaceValid
+    *       одна координата вторая верно подбирается рандомно с проверкой через метод isSpaceValid
     *
     * */
-            if (xDiagonalMoveAttack != - 1 && yDiagonalMoveAttack != - 1) {
+            if (xDiagonalMoveAttack != -1 && yDiagonalMoveAttack != -1) {
                 x = xDiagonalMoveAttack;
                 y = yDiagonalMoveAttack;
-            } else if (xDiagonalProtection != - 1 && yDiagonalProtection != - 1){
+            } else if (xDiagonalProtection != -1 && yDiagonalProtection != -1){
                 x = xDiagonalProtection;
                 y = yDiagonalProtection;
             } else if (xForMoveAttack != -1 && yForMoveAttack == -1) {           // исключение случая когда образовалась "ВИЛКА" - заведомый проигрыш
@@ -210,9 +213,12 @@ public class Homework4 {
             } else if (xForMoveProtection != -1 && yForMoveProtection == -1) {    // исключение случая когда образовалась "ВИЛКА" - заведомый проигрыш
                 x = xForMoveProtection;                                           //
                 y = random.nextInt(SIZE);
-            } else if ( xForMoveProtection == -1 && yForMoveProtection != -1 ) {
+            } else if (xForMoveProtection == -1 && yForMoveProtection != -1 ) {
                 y = yForMoveProtection;
                 x = random.nextInt(SIZE);
+            } else if (xFirstMove != -1  && yFirstMove != -1) {
+                x = xFirstMove;
+                y = yFirstMove;
             } else {
                 y = random.nextInt(SIZE);
                 x = random.nextInt(SIZE);
@@ -248,8 +254,8 @@ public class Homework4 {
                 if (gameField[ii][i] == checkDot) {
                     countDotVertical++;
                 }
-                if (countDotVertical == (DOTS_TO_WIN - 1) && !isVerticalFull(i)) {     // символов в вертикаль на 1 меньше
-                    yForMove = i;                                                      // до победы + вертикаль не заполнена полностью
+                if (countDotVertical == (DOTS_TO_WIN - 1) && !isVerticalFull(i)) {     // символов в вертикаль на 1 меньше до победы
+                    yForMove = i;                                                      //  + вертикаль не заполнена полностью
                     break;
                 }
             }
@@ -355,5 +361,20 @@ public class Homework4 {
             if (countFullSpace == SIZE) return true;
         }
         return false;
+    }
+    public static int getXYFirstMove () {                       // определяет координаты первого хода AI + иногда срабатывает в дальнейшем
+        int xy = -1;                                            // при тестировании выявлено "слабое" место в логике игры
+        int xyCheck = (int ) SIZE / 2;                          // добавлена "хитрость" для первого хода
+        if (gameField[xyCheck][xyCheck] == DOT_EMPTY) {         // при пустующем центральном поле занимает его
+            return xyCheck;
+        } else if (gameField[0][0] == DOT_EMPTY || gameField[0][gameField.length - 1] == DOT_EMPTY ||
+            gameField[gameField.length - 1][0] == DOT_EMPTY || gameField[gameField.length - 1][gameField.length - 1] == DOT_EMPTY) {
+
+            switch (random.nextInt(2) ){                          // опроборал switch
+                case 0 : return 0;                                       // занимает угловые позиции поля
+                case 1 : return (gameField.length - 1);
+            }
+        }
+        return xy;
     }
 }
