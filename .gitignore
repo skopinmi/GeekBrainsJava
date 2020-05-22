@@ -1,4 +1,8 @@
 
 *.class
 
+<<<<<<< HEAD
 out/production/GeekBrainsJava/META-INF/
+=======
+*.kotlin_module
+>>>>>>> lesson4
