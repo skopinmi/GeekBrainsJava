@@ -27,13 +27,13 @@ public class Homework {
             System.out.println("");
             System.out.println("Будем играть еще?");
             System.out.println("Да 1 / Нет 0");
-            if (scanner.nextInt() == 0) {
+            if (getXYDigit() == 0) {
                 continueGame = false;
             }
         } while (continueGame);
         System.out.println("Вы виграли " + countOfHumanWin + " раз.");
         System.out.println("Компьютер выиграл " + countOfAIWin + " раз.");
-        System.out.println("Игр вничью " + countOfDraw + " .");
+        System.out.println("Игр вничью " + countOfDraw + ".");
     }
     public static void playGame (){                             // последовательность ходов и оформление игры
         while (true) {
