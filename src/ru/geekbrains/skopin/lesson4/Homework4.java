@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Homework4 {
     public static char[][] gameField;
-    public static final int SIZE = 5;
+    public static final int SIZE = 3;
     public static final int DOTS_TO_WIN = 4;
     public static final char DOT_O = 'O';
     public static final char DOT_X = 'X';
@@ -183,10 +183,10 @@ public class Homework4 {
         int yForMoveAttack = getVertical(DOT_O);         // координата вертикали предполагаемого выигрыша
         int xForMoveProtection = getHorizontal(DOT_X);   // координата горизонтали предполагаемого проигрыша
         int yForMoveProtection = getVertical(DOT_X);     // координата вертикали предполагаемого проигрыша
-        int xDiagonalMoveAttack = getXInDiagonal(DOT_O);           // координата Х в диагонали предполагаемого выигрыша
-        int yDiagonalMoveAttack = getYInDiagonal(DOT_O);           // координата У в диагонали предполагаемого выигрыша
-        int xDiagonalProtection = getXInDiagonal(DOT_X);           // координата Х в диагонали предполагаемого проигрыша
-        int yDiagonalProtection = getYInDiagonal(DOT_X);            // координата У в диагонали предполагаемого проигрыша
+        int xDiagonalMoveAttack = getXYInDiagonal(DOT_O);           // координата Х в диагонали предполагаемого выигрыша
+        int yDiagonalMoveAttack = getXYInDiagonal(DOT_O);           // координата У в диагонали предполагаемого выигрыша
+        int xDiagonalProtection = getXYInDiagonal(DOT_X);           // координата Х в диагонали предполагаемого проигрыша
+        int yDiagonalProtection = getXYInDiagonal(DOT_X);            // координата У в диагонали предполагаемого проигрыша
         do {
     /*
     *       Блок выбора дальнейшего хода
@@ -247,7 +247,7 @@ public class Homework4 {
         return false;
     }
     public static int getVertical (char checkDot ){
-        int yForMove = - 1;                               // координата вертикали  где проверяемых символов DOT_TO_WIN - 1
+        // координата вертикали  где проверяемых символов DOT_TO_WIN - 1
         for (int i = 0; i < SIZE; i++) {
             int countDotVertical = 0;                        // счет символов  по вертикалям
             for (int ii = 0; ii < SIZE; ii++) {
@@ -255,16 +255,14 @@ public class Homework4 {
                     countDotVertical++;
                 }
                 if (countDotVertical == (DOTS_TO_WIN - 1) && !isVerticalFull(i)) {     // символов в вертикаль на 1 меньше до победы
-                    yForMove = i;                                                      //  + вертикаль не заполнена полностью
-                    break;
+                    return i;                                                      //  + вертикаль не заполнена полностью
                 }
             }
         }
-        return  yForMove;
+        return  -1;
     }
     public static int getHorizontal (char checkDot ){
-
-        int xForMove = - 1;                               // координата горизонтали где проверяемых символов DOT_TO_WIN - 1
+        // координата горизонтали где проверяемых символов DOT_TO_WIN - 1
         for (int i = 0; i < SIZE; i++) {
             int countDotHorizontal = 0;                      // счет символов в горизонтали где проверяемых символов DOT_TO_WIN - 1
             for (int ii = 0; ii < SIZE; ii++) {
@@ -272,15 +270,13 @@ public class Homework4 {
                     countDotHorizontal++;
                 }
                 if (countDotHorizontal == (DOTS_TO_WIN - 1) && !isHorizontalFull(i)) { // символов  в горизонтали на 1 меньше
-                    xForMove = i;                                                      // до  победы + горизонталь не заполнена полностью
-                    break;
+                    return i;                                                      // до  победы + горизонталь не заполнена полностью
                 }
             }
         }
-        return  xForMove;
+        return  -1;
     }
-    public static int getXInDiagonal(char symbol){    // получение Х в диагонали
-        int x = - 1;
+    public static int getXYInDiagonal(char symbol){    // получение Х в диагонали
         if(isDiagonal1OneMoveToFull(symbol)) {
             for (int i = 0; i < SIZE; i++) {
                 if (gameField[i][i] == DOT_EMPTY) {
@@ -294,24 +290,7 @@ public class Homework4 {
                 }
             }
         }
-        return x;
-    }
-    public static int getYInDiagonal(char symbol) {            // получение У в диагонали
-        int y = -1;
-        if (isDiagonal1OneMoveToFull(symbol)) {
-            for (int i = 0; i < SIZE; i++) {
-                if (gameField[i][i] == DOT_EMPTY) {
-                    return i;
-                }
-            }
-        } else if (isDiagonal2OneMoveToFull(symbol)) {
-            for (int i = 0; i < SIZE; i++) {
-                if (gameField[i][SIZE - 1 - i] == DOT_EMPTY) {
-                    return (SIZE - 1 - i);
-                }
-            }
-        }
-        return y;
+        return -1;
     }
 
     public static boolean isDiagonal1OneMoveToFull (char symbol ) {  // есть ли в диагонали  символов DOT_TO_WIN - 1
@@ -363,7 +342,7 @@ public class Homework4 {
         return false;
     }
     public static int getXYFirstMove () {                       // определяет координаты первого хода AI + иногда срабатывает в дальнейшем
-        int xy = -1;                                            // при тестировании выявлено "слабое" место в логике игры
+                                                             // при тестировании выявлено "слабое" место в логике игры
         int xyCheck = (int ) SIZE / 2;                          // добавлена "хитрость" для первого хода
         if (gameField[xyCheck][xyCheck] == DOT_EMPTY) {         // при пустующем центральном поле занимает его
             return xyCheck;
@@ -375,6 +354,6 @@ public class Homework4 {
                 case 1 : return (gameField.length - 1);
             }
         }
-        return xy;
+        return -1;
     }
 }
