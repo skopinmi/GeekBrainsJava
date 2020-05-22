@@ -99,14 +99,14 @@ public class Homework4 {
                 countDotDiagonal1++;
             } else {
                 if (SIZE > 3) {
-                    countDotHorizontal = 0;           //сброс на ноль для счета фишек только в один ряд
+                    countDotDiagonal1 = 0;           //сброс на ноль для счета фишек только в один ряд
                 }
             }
             if (gameField[i][gameField.length - 1 - i] == symbol) {
                 countDotDiagonal2++;
             } else {
                 if (SIZE > 3) {
-                    countDotHorizontal = 0;           //сброс на ноль для счета фишек только в один ряд
+                    countDotDiagonal2 = 0;           //сброс на ноль для счета фишек только в один ряд
                 }
             }
             if (countDotDiagonal1 == DOTS_TO_WIN || countDotDiagonal2 == DOTS_TO_WIN) {
@@ -283,8 +283,10 @@ public class Homework4 {
                     countDotVertical++;
                 }
                 if (countDotVertical == (DOTS_TO_WIN - 1) && !isVerticalFull(i)) {     // символов в вертикаль на 1 меньше до победы
-                    yForMove = i;                                                      //  + вертикаль не заполнена полностью
-                    break;
+                    return i;                                                      //  + вертикаль не заполнена полностью
+                }
+                if (countDotVertical == (DOTS_TO_WIN - 2) && !isVerticalFull(i) && SIZE > 3) {     // символов в вертикаль на 2 меньше до победы
+                    return i;                                                      //  + вертикаль не заполнена полностью
                 }
             }
         }
@@ -300,8 +302,10 @@ public class Homework4 {
                     countDotHorizontal++;
                 }
                 if (countDotHorizontal == (DOTS_TO_WIN - 1) && !isHorizontalFull(i)) { // символов  в горизонтали на 1 меньше
-                    xForMove = i;                                                      // до  победы + горизонталь не заполнена полностью
-                    break;
+                    return i;                                                      // до  победы + горизонталь не заполнена полностью
+                }
+                if (countDotHorizontal == (DOTS_TO_WIN - 2) && !isHorizontalFull(i) && SIZE > 3) { // символов  в горизонтали на 2 меньше
+                    return  i;                                                      // до  победы + горизонталь не заполнена полностью
                 }
             }
         }
@@ -341,26 +345,36 @@ public class Homework4 {
         return -1;
     }
 
-    public static boolean isDiagonal1OneMoveToFull (char symbol ) {  // есть ли в диагонали  символов DOT_TO_WIN - 1
+    public static boolean isDiagonal1OneMoveToFull (char symbol ) {  // есть ли в диагонали  символов DOT_TO_WIN - 1 и DOT_TO_WIN - 2 для размера > 3
         int countSymbols = 0;
         for (int i = 0; i < SIZE; i++) {
             if (gameField[i][i] == symbol) {
                 countSymbols ++;
+            } else if (gameField[i][i] != DOT_EMPTY && SIZE > 3) {
+                countSymbols = 0;
             }
             if (countSymbols == (DOTS_TO_WIN - 1) && !isDiagonal1Full()) {
+                return true;
+            }
+            if (countSymbols == (DOTS_TO_WIN - 1) && !isDiagonal1Full() && SIZE < 3) {
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean isDiagonal2OneMoveToFull (char symbol) {  // есть ли в диагонали  символов DOT_TO_WIN - 1
+    public static boolean isDiagonal2OneMoveToFull (char symbol) {  // есть ли в диагонали  символов DOT_TO_WIN - 1  и DOT_TO_WIN - 2 для размера > 3
         int countSymbols = 0;
         for (int i = 0; i < SIZE; i++) {
             if (gameField[i][SIZE - 1 - i] == symbol) {
                 countSymbols++;
+            } else if (gameField[i][SIZE - 1 - i] != DOT_EMPTY && SIZE > 3) {
+                countSymbols = 0;
             }
             if (countSymbols == (DOTS_TO_WIN - 1) && !isDiagonal2Full()) {
+                return true;
+            }
+            if (countSymbols == (DOTS_TO_WIN - 2) && !isDiagonal2Full() && SIZE > 3) {
                 return true;
             }
         }
