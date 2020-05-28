@@ -1,26 +1,33 @@
 package ru.geekbrains.skopin.lesson5;
 
 public class Dog extends Animal {
-    static int dogCount;
 
-    public Dog(String name) {
+    protected static int dogCount;
+
+    protected Dog(String name) {
         super(name);
         dogCount++;
     }
 
     @Override
-    void run(int runDistance) {
+    protected void run(int runDistance) {
+
         if( runDistance > 500) {
             runDistance = 500;
+            System.out.println( name + " пробежал(ла) только " + runDistance);
         }
-        super.run(runDistance);
+        else {
+            super.run(runDistance);
+        }
     }
 
     @Override
-    void swim(int swimDistance) {
-        if( swimDistance > 10) {
-            swimDistance = 10;
+    protected void swim(int swimDistance) {
+        if( swimDistance < 10) {
+            System.out.println(name + " проплыл(ла) " + swimDistance);
         }
-        super.swim(swimDistance);
+        else {
+            System.out.println(name + " проплыл(ла) 10 и утонул(ла).");
+        }
     }
 }

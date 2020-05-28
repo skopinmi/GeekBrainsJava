@@ -2,23 +2,26 @@ package ru.geekbrains.skopin.lesson5;
 
 public class Cat extends Animal
 {
-    static int catCount;
+    protected static int catCount;
 
-    public Cat(String name) {
+    protected Cat(String name) {
         super(name);
         catCount++;
     }
 
     @Override
-    void run(int runDistance) {
+    protected void run(int runDistance) {
         if( runDistance > 200) {
             runDistance = 200;
+            System.out.println( name + " пробежал(ла) только " + runDistance);
         }
+        else {
         super.run(runDistance);
+        }
     }
 
     @Override
-    void swim(int swimDistance) {
+    protected void swim(int swimDistance) {
         System.out.println(name + " плавать не умеет");
     }
 }
