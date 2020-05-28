@@ -1,4 +1,4 @@
-package ru.geekbrains.skopin.lesson5;
+package ru.geekbrains.skopin.lesson6;
 
 
 public class Main {
