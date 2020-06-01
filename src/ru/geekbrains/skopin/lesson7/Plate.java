@@ -2,8 +2,9 @@ package ru.geekbrains.skopin.lesson7;
 
 public class Plate {
 
+    private final int maxOfFood;
     private int food;
-    private int maxOfFood;
+
 
     public Plate( int maxOfFood) {
         food = 0;

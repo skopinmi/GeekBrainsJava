@@ -2,9 +2,10 @@ package ru.geekbrains.skopin.lesson7;
 
 public class Cat {
 
-    private String name;
-    private int appetite;
+    private final String name;
+    private final int appetite;
     private boolean fullOfCat;
+    private int countOfEaten; // для метода eatByUnitFrom
 
     public Cat (String name, int appetite) {
         this.name = name;
@@ -20,10 +21,8 @@ public class Cat {
                 plate.decreaseFood(appetite);
                 fullOfCat = true;
                 System.out.println("Кот " + name + " поел.");
-            } else if (foodInPlate < appetite){
-                System.out.println("Коту " + name + " еды в этой тареклке мало.");
             } else {
-                System.out.println(name + " поел и сыт.");
+                System.out.println("Коту " + name + " еды в этой тареклке мало.");
             }
         } else {
             System.out.println(name + " сытый кот.");
@@ -43,4 +42,44 @@ public class Cat {
         }
     }
 
+    /* метод питания по 1 единице пищи */
+
+    public void eatByUnitFrom (Plate plate) {
+
+        while (!isFullOfCat()) {
+            if (!plate.isEmpty()) {
+                plate.decreaseFood(1);
+                countOfEaten++;
+                if (appetite == countOfEaten) {
+                    fullOfCat = true;
+                    System.out.println(name + " теперь сытый кот.");
+                }
+
+            } else {
+                System.out.println("Кот " + name + " поел, но не наелся.");
+                break;
+            }
+        }
+    }
+
+    /* определение степени голода в процентах*/
+
+    public void getIsFullOfCatInPercent () {
+        if (isFullOfCat()) {
+            System.out.println("Кот " + name + " сыт.");
+        } else {
+            float percent = (1 - (float) countOfEaten / appetite) * 100;
+            System.out.println( "Кот " + name + " голоден на " +  percent + " %." );
+        }
+    }
+
 }
+
+
+
+
+
+
+
+
+
