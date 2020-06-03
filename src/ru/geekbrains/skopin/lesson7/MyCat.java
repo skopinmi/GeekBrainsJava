@@ -8,7 +8,7 @@ public final class MyCat extends Cat {
 
     private static MyCat myCat;
     private MyCat() {
-            super("Матроскин", 65);
+        super("Матроскин", 65);
     }
     public static MyCat getMyCat () {
         if (myCat == null) {
