@@ -90,7 +90,7 @@ public class Main {
         Plate plateForCat = new PlateForMyCat();
         plateForCat.setFoodInPlate(75);
         Dog dog = new Dog("Бобик", 45);
-        Cat catX = new MyCat();
+        Cat catX = MyCat.getMyCat();
         dog.eatFrom(plateForCat);
         plateForCat.info();
         catX.eatFrom(plateForAll);
