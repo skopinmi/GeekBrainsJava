@@ -68,10 +68,10 @@ public class Main {
         System.out.println("");
         System.out.println("Пришла организованная группа котов.");
 
-        Plate plate3 = new PlateForMyCat();
+        Plate plate3 = PlateForMyCat.getPlateForMyCat();
         plate3.setFoodInPlate(60);
         plate3.info();
-        GroupOfAnimals groupOfCats = new GroupOfAnimals(makeArray(10) );
+        GroupOfAnimals groupOfCats = new GroupOfAnimals(makeArray(13) );
         groupOfCats.groupEatFrom(plate3);
         plate3.info();
         System.out.println("Есть ли голодные коты в группе : " + groupOfCats.hasWhoNeedFood());
@@ -87,7 +87,7 @@ public class Main {
 
         Plate plateForAll = new Plate(100);
         plateForAll.setFoodInPlate(75);
-        Plate plateForCat = new PlateForMyCat();
+        Plate plateForCat = PlateForMyCat.getPlateForMyCat();
         plateForCat.setFoodInPlate(75);
         Dog dog = new Dog("Бобик", 45);
         Cat catX = MyCat.getMyCat();
