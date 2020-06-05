@@ -85,7 +85,7 @@ public class GameWindow extends JFrame {
                 Main.setDotHuman("X");
                 Main.setDotComp("O");
                 DOT = "X";
-                Main.makeGameField(SIZE);
+                Main.newGameField(SIZE);
             }
         });
         dotO.addActionListener(new ActionListener() {
@@ -94,7 +94,7 @@ public class GameWindow extends JFrame {
                 Main.setDotHuman("O");
                 Main.setDotComp("X");
                 DOT = "O";
-                Main.makeGameField(SIZE);
+                Main.newGameField(SIZE);
             }
         });
         newGame.addActionListener(new ActionListener() {
@@ -102,7 +102,7 @@ public class GameWindow extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 for (int i = 0; i < SIZE * SIZE; i++) {
                     jButtons[i].setText("");
-                    Main.makeGameField(SIZE);
+                    Main.newGameField(SIZE);
                 }
             }
         });
@@ -128,7 +128,7 @@ public class GameWindow extends JFrame {
                 public void actionPerformed(ActionEvent actionEvent) {
                     calculateXY(a);
                     String w = Main.getGameField(x, y);
-                    if (w.equals("")) {
+                    if (w.equals("*")) {
                         jButtons[a].setText(DOT);
                         textArea.append("Вы нажали кнопку № " + a + "!");
                         Main.putInGameField(x, y);

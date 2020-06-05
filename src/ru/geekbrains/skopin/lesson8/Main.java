@@ -6,12 +6,13 @@ import java.util.Scanner;
 
 public class Main {
 /*
-    почти пусто ...
+    еще есть глюки ...
  */
-    public static String[][] gameField;
+
     public static final int SIZE = 3;
+    public static String[][] gameField = new String [SIZE][SIZE];;
     public static final int DOTS_TO_WIN = 3;
-    public static String DOT_EMPTY = "";
+    public static String DOT_EMPTY = "*";
     private static String  DotComp = "O";
     private static String DotHuman = "X";
     public static Random random = new Random();
@@ -26,7 +27,7 @@ public class Main {
         GameWindow gameWindow = GameWindow.createGameWindow();
         gameWindow.setVisible(true);
         boolean continueGame = true;
-        makeGameField(SIZE);
+        newGameField(SIZE);
         do {
             playGame();
             setMyMove(true);
@@ -37,20 +38,20 @@ public class Main {
     public static boolean isGameFieldFull () {
         for (String [] a : gameField){
             for(String b : a) {
-                if (b.equals( DOT_EMPTY)) return false;
+                if (b.equals(DOT_EMPTY)) return false;
             }
         }
         return true;
     }
 
-    public static void makeGameField (int SIZE) {
-        gameField = new String [SIZE][SIZE];
+    public static void newGameField (int SIZE) {
         for (int i = 0; i < SIZE; i++) {
             for (int ii = 0; ii < SIZE; ii++) {
                 gameField [i] [ii] = DOT_EMPTY;
             }
         }
     }
+
 
     public static void printGameField () {
         for (int i = 0; i <= SIZE; i++) {
@@ -69,7 +70,7 @@ public class Main {
 
     public static void playGame (){                             // последовательность ходов и оформление игры
         while (true) {
-                       
+
             if (isWin(DotHuman)) {
                 MassageWindow.createMassageWindow("Вы выиграли.");
 
@@ -83,11 +84,7 @@ public class Main {
             }
 
             if (!myMove) {
-
-                System.out.println("Ход компьютера :");
-                System.out.println("");
                 moveOfAi();
-
                 printGameField();
                 if (isWin(DotComp)) {
                     MassageWindow.createMassageWindow("Компьютер выиграл.");
@@ -101,7 +98,7 @@ public class Main {
                 }
             }
         }
-        makeGameField(SIZE);
+        newGameField(SIZE);
     }
 
     public static void setMyMove(boolean myMove) {
@@ -129,7 +126,7 @@ public class Main {
         gameField [y][x] = DotComp;
         GameWindow.setJButton(x, y);
         setMyMove(true);
-        makeGameField(SIZE);
+        printGameField();
     }
 
     public static boolean isWin(String symbol) {
