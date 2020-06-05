@@ -13,7 +13,7 @@ public class GameWindow extends JFrame {
     private static GameWindow gameWindow = new GameWindow();
 
     private GameWindow () {
-        
+
         setTitle("X/O и swing! GUI v0.1");
         setBounds(100, 100, 350, 400);
         setResizable(false);
