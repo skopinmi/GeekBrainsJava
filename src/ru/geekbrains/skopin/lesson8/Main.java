@@ -6,7 +6,8 @@ import java.util.Scanner;
 
 public class Main {
 /*
-    еще есть глюки ...
+    еще есть глюки ... и какая - то магия.
+    X-O основная часть в Main
  */
 
     public static final int SIZE = 3;
@@ -17,6 +18,7 @@ public class Main {
     private static String DotHuman = "X";
     public static Random random = new Random();
     private static boolean myMove = true;
+    private static boolean difficulty = true;
     public static int countOfHumanWin = 0;
     public static int countOfAIWin = 0;
     public static int countOfDraw = 0;
@@ -82,7 +84,11 @@ public class Main {
 //                countOfDraw++;
                     break;
                 }
-                moveOfAi();
+                if (difficulty) {
+                    moveOfAi();
+                } else {
+                    moveOfAi2();
+                }
                 printGameField();
                 if (isWin(DotComp)) {
                     MassageWindow.createMassageWindow("Компьютер выиграл.");
@@ -170,32 +176,248 @@ public class Main {
     public static void setDotHuman(String dotHuman) {
         DotHuman = dotHuman;
     }
-}
 
-/*
-
-
-
-
-
-
-
-    public static void main(String[] args) {
-
-        System.out.println("Вы виграли " + countOfHumanWin + " раз.");
-        System.out.println("Компьютер выиграл " + countOfAIWin + " раз.");
-        System.out.println("Игр вничью " + countOfDraw + ".");
+    public static void setDifficulty(boolean difficulty) {
+        Main.difficulty = difficulty;
     }
 
- */
-   /*
+    public static void moveOfAi2 (){                        // интеллект предупреждение проигрыша по горизонтали и вертикали
 
+        /* тут что - то надо делать ... */
+        int x;
+        int y;
+        int xFirstMove = getXYFirstMove();                    // дополнительные координаты для увеличения уровня "ума"
+        int yFirstMove = getXYFirstMove();                    //
+        int xForMoveAttack = getHorizontal(DotComp);       // координата горизонтали предполагаемого выигрыша
+        int yForMoveAttack = getVertical(DotComp);         // координата вертикали предполагаемого выигрыша
+        int xForMoveProtection = getHorizontal(DotHuman);   // координата горизонтали предполагаемого проигрыша
+        int yForMoveProtection = getVertical(DotHuman);     // координата вертикали предполагаемого проигрыша
+        int xDiagonal1MoveAttack = getXYInDiagonal1(DotComp);           // координата Х в диагонали предполагаемого выигрыша
+        int yDiagonal1MoveAttack = getXYInDiagonal1(DotComp);           // координата У в диагонали предполагаемого выигрыша
+        int xDiagonal1Protection = getXYInDiagonal1(DotHuman);           // координата Х в диагонали предполагаемого проигрыша
+        int yDiagonal1Protection = getXYInDiagonal1(DotHuman);            // координата У в диагонали предполагаемого проигрыша
+        int xDiagonal2MoveAttack = getXInDiagonal2(DotComp);           // координата Х в диагонали предполагаемого выигрыша
+        int yDiagonal2MoveAttack = getYInDiagonal2(DotComp);           // координата У в диагонали предполагаемого выигрыша
+        int xDiagonal2Protection = getXInDiagonal2(DotHuman);           // координата Х в диагонали предполагаемого проигрыша
+        int yDiagonal2Protection = getYInDiagonal2(DotHuman);            // координата У в диагонали предполагаемого проигрыша
+        do {
+            /*
+             *       Блок выбора дальнейшего хода
+             *       преимущество за ходом с победой
+             *       далее ход с предупреждением проигрыша
+             *       начало выбора с диагоналей
+             *       далее горизонталь и вертикаль
+             *       по горизонталям и ретикалям дается
+             *       одна координата вторая верно подбирается рандомно с проверкой через метод isSpaceValid
+             *
+             * */
+            if (xDiagonal1MoveAttack != -1 && yDiagonal1MoveAttack != -1) {
+                x = xDiagonal1MoveAttack;
+                y = yDiagonal1MoveAttack;
+            } else if (xDiagonal1Protection != -1 && yDiagonal1Protection != -1) {
+                x = xDiagonal1Protection;
+                y = yDiagonal1Protection;
+            } else if (xDiagonal2MoveAttack != -1 && yDiagonal2MoveAttack != -1) {
+                x = xDiagonal2MoveAttack;
+                y = yDiagonal2MoveAttack;
+            } else if (xDiagonal2Protection != -1 && yDiagonal2Protection != -1) {
+                x = xDiagonal2Protection;
+                y = yDiagonal2Protection;
+            } else if (xForMoveAttack != -1 && yForMoveAttack == -1) {           // исключение случая когда образовалась "ВИЛКА" - заведомый проигрыш
+                x = xForMoveAttack;                                              //
+                y = random.nextInt(SIZE);
+            } else if ( xForMoveAttack == -1 && yForMoveAttack != -1 ) {
+                y = yForMoveAttack;
+                x = random.nextInt(SIZE);
+            } else if (xForMoveProtection != -1 && yForMoveProtection == -1) {    // исключение случая когда образовалась "ВИЛКА" - заведомый проигрыш
+                x = xForMoveProtection;                                           //
+                y = random.nextInt(SIZE);
+            } else if (xForMoveProtection == -1 && yForMoveProtection != -1 ) {
+                y = yForMoveProtection;
+                x = random.nextInt(SIZE);
+            } else if (xFirstMove != -1  && yFirstMove != -1) {
+                x = xFirstMove;
+                y = yFirstMove;
+            } else {
+                y = random.nextInt(SIZE);
+                x = random.nextInt(SIZE);
+            }
+        } while (!isSpaceValid( x, y ));
+        gameField [y][x] = DotComp;
+        GameWindow.setJButton(x, y);
+        setMyMove(true);
+        printGameField();
+    }
+    public static boolean isHorizontalFull (int horizontal) {   // проверка горизонтали на полную заполненность
+        int countFullSpace = 0;
+        for (int i = 0; i < SIZE; i++) {
+            if (!gameField[horizontal][i].equals(DOT_EMPTY)) {
+                countFullSpace++;
+                if (countFullSpace == SIZE) return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isVerticalFull (int vertical) {      // проверка вертикали на полную заполненность
+        int countFullSpace = 0;
+        for (int i = 0; i < SIZE; i++) {
+            if (!gameField[i][vertical].equals(DOT_EMPTY)) {
+                countFullSpace++;
+                if (countFullSpace == SIZE) return true;
+            }
 
+        }
+        return false;
+    }
+    public static int getVertical (String checkDot ){
+        int yForMove = - 1;                               // координата вертикали  где проверяемых символов DOT_TO_WIN - 1
+        for (int i = 0; i < SIZE; i++) {
+            int countDotVertical = 0;                        // счет символов  по вертикалям
+            for (int ii = 0; ii < SIZE; ii++) {
+                if (gameField[ii][i].equals(checkDot)) {
+                    countDotVertical++;
+                }
+                if (countDotVertical == (DOTS_TO_WIN - 1) && !isVerticalFull(i)) {     // символов в вертикаль на 1 меньше до победы
+                    return i;                                                         //  + вертикаль не заполнена полностью
+                }
+                if (countDotVertical == (DOTS_TO_WIN - 2) && !isVerticalFull(i) && SIZE > 3) {     // символов в вертикаль на 2 меньше до победы
+                    return i;                                                                      //  + вертикаль не заполнена полностью
+                }
+            }
+        }
+        return  yForMove;
+    }
+    public static int getHorizontal (String checkDot ){
 
+        int xForMove = - 1;                               // координата горизонтали где проверяемых символов DOT_TO_WIN - 1
+        for (int i = 0; i < SIZE; i++) {
+            int countDotHorizontal = 0;                      // счет символов в горизонтали где проверяемых символов DOT_TO_WIN - 1
+            for (int ii = 0; ii < SIZE; ii++) {
+                if (gameField[i][ii].equals(checkDot)) {
+                    countDotHorizontal++;
+                }
+                if (countDotHorizontal == (DOTS_TO_WIN - 1) && !isHorizontalFull(i)) { // символов  в горизонтали на 1 меньше
+                    return i;                                                      // до  победы + горизонталь не заполнена полностью
+                }
+                if (countDotHorizontal == (DOTS_TO_WIN - 2) && !isHorizontalFull(i) && SIZE > 3) { // символов  в горизонтали на 2 меньше
+                    return  i;                                                      // до  победы + горизонталь не заполнена полностью
+                }
+            }
+        }
+        return  xForMove;
+    }
+    public static int getXYInDiagonal1(String symbol){    // получение Х в диагонали
 
+        if(isDiagonal1OneMoveToFull(symbol)) {
+            for (int i = 0; i < SIZE; i++) {
+                if (gameField[i][i].equals(DOT_EMPTY)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
 
+    public static int getXInDiagonal2(String symbol) {
+        if (isDiagonal2OneMoveToFull(symbol)) {
+            for (int i = 0; i < SIZE; i++) {
+                if (gameField[i][SIZE - 1 - i].equals(DOT_EMPTY)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
 
+    public static int getYInDiagonal2(String symbol) {
+        if (isDiagonal2OneMoveToFull(symbol)) {
+            for (int i = 0; i < SIZE; i++) {
+                if (gameField[i][SIZE - 1 - i].equals(DOT_EMPTY)) {
+                    return (SIZE - 1 - i);
+                }
+            }
+        }
+        return -1;
+    }
 
+    public static boolean isDiagonal1OneMoveToFull (String symbol ) {  // есть ли в диагонали  символов DOT_TO_WIN - 1 и DOT_TO_WIN - 2 для размера > 3
+        int countSymbols = 0;
+        for (int i = 0; i < SIZE; i++) {
+            if (gameField[i][i].equals(symbol)) {
+                countSymbols ++;
+            } else if (gameField[i][i] != DOT_EMPTY && SIZE > 3) {
+                countSymbols = 0;
+            }
+            if (countSymbols == (DOTS_TO_WIN - 1) && !isDiagonal1Full()) {
+                return true;
+            }
+            if (countSymbols == (DOTS_TO_WIN - 1) && !isDiagonal1Full() && SIZE < 3) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public static boolean isDiagonal2OneMoveToFull (String symbol) {  // есть ли в диагонали  символов DOT_TO_WIN - 1  и DOT_TO_WIN - 2 для размера > 3
+        int countSymbols = 0;
+        for (int i = 0; i < SIZE; i++) {
+            if (gameField[i][SIZE - 1 - i].equals(symbol)) {
+                countSymbols++;
+            } else if (!gameField[i][SIZE - 1 - i].equals(DOT_EMPTY) && SIZE > 3) {
+                countSymbols = 0;
+            }
+            if (countSymbols == (DOTS_TO_WIN - 1) && !isDiagonal2Full()) {
+                return true;
+            }
+            if (countSymbols == (DOTS_TO_WIN - 2) && !isDiagonal2Full() && SIZE > 3) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isDiagonal1Full () {                     // проверка диагонали 1 на полную заполненность
+        int countFullSpace = 0;
+        for (int i = 0; i < SIZE; i++) {
 
- */
+            if (!gameField[i][i].equals(DOT_EMPTY)) {
+                countFullSpace++;
+            }
+            if (countFullSpace == SIZE) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isDiagonal2Full () {                     // проверка диагонали 2 на полную заполненность
+        int countFullSpace = 0;
+        for (int i = 0; i < SIZE; i++) {
+            if (!gameField[i][SIZE - 1 - i].equals(DOT_EMPTY)) {
+                countFullSpace++;
+            }
+            if (countFullSpace == SIZE) return true;
+        }
+        return false;
+    }
+    public static int getXYFirstMove () {                       // определяет координаты первого хода AI + иногда срабатывает в дальнейшем
+        // при тестировании выявлено "слабое" место в логике игры
+        int xyCheck = (int ) SIZE / 2;                          // добавлена "хитрость" для первого хода
+        if (gameField[xyCheck][xyCheck].equals(DOT_EMPTY))
+        {                                                              // при пустующем центральном поле занимает его
+            return xyCheck;
+        }
+        else if (gameField[0][0].equals(DOT_EMPTY) &&
+                gameField[0][gameField.length - 1].equals(DOT_EMPTY) &&
+                gameField[gameField.length - 1][0].equals(DOT_EMPTY) &&
+                gameField[gameField.length - 1][gameField.length - 1].equals(DOT_EMPTY))
+        {
+
+            if (random.nextInt(2) == 0) {
+                return 0;                                             // занимает угловые позиции поля
+            } else {
+                return (gameField.length - 1);
+            }
+        }
+        return -1;
+    }
+}
+

@@ -49,10 +49,8 @@ public class GameWindow extends JFrame {
         JMenu difficulty = new JMenu("Сложность");
         JMenuItem light = new JMenuItem("Легкая");
         JMenuItem medium = new JMenuItem("Средняя");
-        JMenuItem hard = new JMenuItem("Тяжелая");
         difficulty.add(light);
         difficulty.add(medium);
-        difficulty.add(hard);
         JMenu dots = new JMenu("Выбор фишки");
         JMenuItem dotX = new JMenuItem("Крестики");
         JMenuItem dotO = new JMenuItem("Нолики");
@@ -68,7 +66,7 @@ public class GameWindow extends JFrame {
         парочка функций
         newGame / новая игра - очистка игрового поля
         exit / выход - выход из программы
-        difficulty / сложность - выбор из 3-х вариантов (действия нет)
+        difficulty / сложность - выбор из 2-х вариантов (рандомный ход и "осмысленный")
         dots / выбол фишки - крестик/нолик изменяется надпись при нажатии
         help / помощь - выбрасывается дополнительное окно с текстом
  */
@@ -97,6 +95,18 @@ public class GameWindow extends JFrame {
                 DOT = "O";
                 Main.newGameField(SIZE);
                 cleanJButtons();
+            }
+        });
+        light.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                Main.setDifficulty(true);
+            }
+        });
+        medium.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                Main.setDifficulty(false);
             }
         });
         newGame.addActionListener(new ActionListener() {
