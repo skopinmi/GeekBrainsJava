@@ -11,6 +11,8 @@ public class GameWindow extends JFrame {
     private static String DOT = "X";
     private static JButton [] jButtons;
     private static GameWindow gameWindow = new GameWindow();
+    private static int x;
+    private static int y;
 
     private GameWindow () {
 
@@ -80,13 +82,19 @@ public class GameWindow extends JFrame {
         dotX.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                Main.setDotHuman("X");
+                Main.setDotComp("O");
                 DOT = "X";
+                Main.makeGameField(SIZE);
             }
         });
         dotO.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                Main.setDotHuman("O");
+                Main.setDotComp("X");
                 DOT = "O";
+                Main.makeGameField(SIZE);
             }
         });
         newGame.addActionListener(new ActionListener() {
@@ -94,6 +102,7 @@ public class GameWindow extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 for (int i = 0; i < SIZE * SIZE; i++) {
                     jButtons[i].setText("");
+                    Main.makeGameField(SIZE);
                 }
             }
         });
@@ -117,8 +126,16 @@ public class GameWindow extends JFrame {
             jButtons[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    jButtons[a].setText(DOT);
-                    textArea.append("Вы нажали кнопку № " + a + "!" );
+                    calculateXY(a);
+                    String w = Main.getGameField(x, y);
+                    if (w.equals("")) {
+                        jButtons[a].setText(DOT);
+                        textArea.append("Вы нажали кнопку № " + a + "!");
+                        Main.putInGameField(x, y);
+                        Main.setMyMove(false);
+                    }
+                    x = -1;
+                    y = -1;
                 }
             });
         }
@@ -132,6 +149,31 @@ public class GameWindow extends JFrame {
     }
     public static GameWindow createGameWindow () {
         return gameWindow;
+    }
+
+    private static void calculateXY (int a) {
+        if (a < SIZE ) {
+            y = 0;
+            x = a;
+        } else if (a < SIZE * 2) {
+            y = SIZE - 2;
+            x = a - SIZE;
+        } else {
+            y = SIZE - 1;
+            x = a - (SIZE * 2);
+        }
+    }
+
+    public static void setJButton (int x, int y) {
+        int a = -1;
+        if (y == 0) {
+            a = x;
+        } else if (y == 1 ) {
+            a = SIZE + x;
+        } else {
+            a = SIZE * 2 + x;
+        }
+        jButtons[a].setText(Main.getDotComp());
     }
 
 }
