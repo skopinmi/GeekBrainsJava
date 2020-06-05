@@ -1,3 +1,4 @@
+
 package ru.geekbrains.skopin.lesson8;
 
 import javax.swing.*;
@@ -19,7 +20,6 @@ public class GameWindow extends JFrame {
 /*
         Заморочился с созданием менюшки
  */
-
         JTextArea textArea = new JTextArea();
         JPanel down = new JPanel(new FlowLayout());
         down.add(textArea);
