@@ -1,3 +1,4 @@
+
 package ru.geekbrains.skopin.lesson8;
 
 import javax.swing.*;
@@ -12,19 +13,28 @@ public class GameWindow extends JFrame {
     private static GameWindow gameWindow = new GameWindow();
 
     private GameWindow () {
+        
         setTitle("X/O и swing! GUI v0.1");
         setBounds(100, 100, 350, 400);
         setResizable(false);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-/*
-        Заморочился с созданием менюшки
- */
 
+/*
+        текстовая панелька внизу окна
+ */
         JTextArea textArea = new JTextArea();
         JPanel down = new JPanel(new FlowLayout());
         down.add(textArea);
+/*
+        панелька с кнопочками - игровое поле
+ */
         JPanel center = new JPanel(new GridLayout(SIZE, SIZE));
         jButtons = new JButton[SIZE * SIZE];
+/*
+        Заморочился с созданием менюшки
+        кода много, а сложного нет совсем
+ */
+
         JPanel top = new JPanel(new FlowLayout());
         JMenuBar menu = new JMenuBar();
         JMenu game = new JMenu("Игра");
@@ -112,10 +122,13 @@ public class GameWindow extends JFrame {
                 }
             });
         }
+/*
+        все созданное разместил в окне
+ */
         add(center, BorderLayout.CENTER);
         add(down, BorderLayout.SOUTH);
-        add(top, BorderLayout.NORTH);         // центральное расположение меню менюбар добавлен в панель
-//        add(menu, BorderLayout.NORTH);     // обычное расположение меню
+        add(top, BorderLayout.NORTH);         // центральное расположение меню менюбар добавлено в панель
+//        add(menu, BorderLayout.NORTH);     // обычное расположение меню без панели
     }
     public static GameWindow createGameWindow () {
         return gameWindow;
