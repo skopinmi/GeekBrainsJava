@@ -70,34 +70,32 @@ public class Main {
 
     public static void playGame (){                             // последовательность ходов и оформление игры
         while (true) {
-
-            if (isWin(DotHuman)) {
-                MassageWindow.createMassageWindow("Вы выиграли.");
+            printGameField(); // тут магия - без печати ничего не работает...
+            if (!myMove) {
+                if (isWin(DotHuman)) {
+                    MassageWindow.createMassageWindow("Вы выиграли.");
 
 //                countOfHumanWin++;
-                break;
-            }
-            if (isGameFieldFull()) {
-                MassageWindow.createMassageWindow("Ничья.");
+                    break;
+                } else if (isGameFieldFull()) {
+                    MassageWindow.createMassageWindow("Ничья.");
 //                countOfDraw++;
-                break;
-            }
-
-            if (!myMove) {
+                    break;
+                }
                 moveOfAi();
                 printGameField();
                 if (isWin(DotComp)) {
                     MassageWindow.createMassageWindow("Компьютер выиграл.");
 //                countOfAIWin++;
                     break;
-                }
-                if (isGameFieldFull()) {
+                } else if (isGameFieldFull()) {
                     MassageWindow.createMassageWindow("Ничья.");
 //                countOfDraw++;
                     break;
                 }
             }
         }
+        printGameField();
         newGameField(SIZE);
     }
 
@@ -141,34 +139,18 @@ public class Main {
             for (int ii = 0; ii < SIZE; ii++) {
                 if (gameField[i][ii].equals(symbol)) {
                     countDotHorizontal++;
-                } else {
-                    if (SIZE > 3) {
-                        countDotHorizontal = 0;           //сброс на ноль для счета фишек только в один ряд
-                    }
-                }                                     //для случеев когда SIZE > DOT_TO_WIN
+                }
                 if (gameField[ii][i].equals(symbol)) {
                     countDotVertical++;
-                } else {
-                    if (SIZE > 3) {
-                        countDotHorizontal = 0;           //сброс на ноль для счета фишек только в один ряд для SIZE > 3
-                    }
                 }
                 if (countDotHorizontal == DOTS_TO_WIN || countDotVertical == DOTS_TO_WIN) {
                     return true; }
             }
             if(gameField[i][i].equals(symbol)) {
                 countDotDiagonal1++;
-            } else {
-                if (SIZE > 3) {
-                    countDotDiagonal1 = 0;           //сброс на ноль для счета фишек только в один ряд для SIZE > 3
-                }
             }
             if (gameField[i][gameField.length - 1 - i].equals(symbol)) {
                 countDotDiagonal2++;
-            } else {
-                if (SIZE > 3) {
-                    countDotDiagonal2 = 0;           //сброс на ноль для счета фишек только в один ряд для SIZE > 3
-                }
             }
             if (countDotDiagonal1 == DOTS_TO_WIN || countDotDiagonal2 == DOTS_TO_WIN) {
                 return true;

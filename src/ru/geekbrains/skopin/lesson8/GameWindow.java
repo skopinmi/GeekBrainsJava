@@ -86,6 +86,7 @@ public class GameWindow extends JFrame {
                 Main.setDotComp("O");
                 DOT = "X";
                 Main.newGameField(SIZE);
+                cleanJButtons();
             }
         });
         dotO.addActionListener(new ActionListener() {
@@ -95,15 +96,13 @@ public class GameWindow extends JFrame {
                 Main.setDotComp("X");
                 DOT = "O";
                 Main.newGameField(SIZE);
+                cleanJButtons();
             }
         });
         newGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                for (int i = 0; i < SIZE * SIZE; i++) {
-                    jButtons[i].setText("");
-                    Main.newGameField(SIZE);
-                }
+                cleanJButtons();
             }
         });
         help.addActionListener(new ActionListener() {
@@ -176,4 +175,10 @@ public class GameWindow extends JFrame {
         jButtons[a].setText(Main.getDotComp());
     }
 
+    private static  void cleanJButtons () {
+        for (int i = 0; i < SIZE * SIZE; i++) {
+            jButtons[i].setText("");
+            Main.newGameField(SIZE);
+        }
+    }
 }
