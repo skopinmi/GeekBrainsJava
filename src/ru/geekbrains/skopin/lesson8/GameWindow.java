@@ -1,11 +1,11 @@
 package ru.geekbrains.skopin.lesson8;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GameWindow extends JFrame {
+    
     private static int SIZE = 3;
     private static String DOT = "X";
     private static JButton [] jButtons;
@@ -19,7 +19,6 @@ public class GameWindow extends JFrame {
 /*
         Заморочился с созданием менюшки
  */
-
         JTextArea textArea = new JTextArea();
         JPanel down = new JPanel(new FlowLayout());
         down.add(textArea);
@@ -99,7 +98,6 @@ public class GameWindow extends JFrame {
         в соответствии с выбором фишки
         в текстовой строке номер кнопки отображается
  */
-
         for (int i = 0; i < SIZE * SIZE; i++) {
             jButtons[i] = new JButton();
             center.add(jButtons[i]);
