@@ -1,4 +1,4 @@
-package ru.geekbrains.skopin.lesson7;
+package ru.geekbrains.skopin.java1.lesson7;
 
 public final class PlateForMyCat extends Plate {
     private static PlateForMyCat plateForMyCat;

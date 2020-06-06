@@ -1,4 +1,4 @@
-package ru.geekbrains.skopin.lesson5;
+package ru.geekbrains.skopin.java1.lesson5;
 
 public class Main {
     public static void main(String[] args) {

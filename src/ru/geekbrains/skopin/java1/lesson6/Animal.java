@@ -1,4 +1,4 @@
-package ru.geekbrains.skopin.lesson6;
+package ru.geekbrains.skopin.java1.lesson6;
 
 abstract class Animal {
 

@@ -1,4 +1,4 @@
-package ru.geekbrains.skopin.lesson5;
+package ru.geekbrains.skopin.java1.lesson5;
 /*
     Создать класс "Сотрудник" с полями: ФИО, должность, email, телефон, зарплата, возраст.
  */

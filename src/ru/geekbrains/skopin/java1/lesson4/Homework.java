@@ -1,4 +1,4 @@
-package ru.geekbrains.skopin.lesson4;
+package ru.geekbrains.skopin.java1.lesson4;
 
 import java.util.Random;
 import java.util.Scanner;

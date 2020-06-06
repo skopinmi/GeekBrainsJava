@@ -1,7 +1,7 @@
-package ru.geekbrains.skopin.lesson8;
+
+package ru.geekbrains.skopin.java1.lesson8;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class HelpWindow extends JFrame {
 
@@ -14,7 +14,7 @@ public class HelpWindow extends JFrame {
         setBounds(10, 10, 400, 400);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         JTextPane textPane = new JTextPane();
-        textPane.setText(text());
+        textPane.setText("text()");
         add(textPane);
         setVisible(true);
     }
