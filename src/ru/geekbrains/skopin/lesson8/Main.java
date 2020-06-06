@@ -164,7 +164,7 @@ public class Main {
         }
         return false;
     }
-    public static boolean isSpaceValid (int x, int y) {
+    public static boolean isSpaceValid ( int y, int x) {
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) return false;
         return gameField[y][x].equals(DOT_EMPTY);
     }
@@ -188,10 +188,10 @@ public class Main {
         int y;
         int xFirstMove = getXYFirstMove();                    // дополнительные координаты для увеличения уровня "ума"
         int yFirstMove = getXYFirstMove();                    //
-        int xForMoveAttack = getHorizontal(DotComp);       // координата горизонтали предполагаемого выигрыша
-        int yForMoveAttack = getVertical(DotComp);         // координата вертикали предполагаемого выигрыша
-        int xForMoveProtection = getHorizontal(DotHuman);   // координата горизонтали предполагаемого проигрыша
-        int yForMoveProtection = getVertical(DotHuman);     // координата вертикали предполагаемого проигрыша
+        int yForMoveAttack = getHorizontal(DotComp);       // координата горизонтали предполагаемого выигрыша
+        int xForMoveAttack = getVertical(DotComp);         // координата вертикали предполагаемого выигрыша
+        int yForMoveProtection = getHorizontal(DotHuman);   // координата горизонтали предполагаемого проигрыша
+        int xForMoveProtection = getVertical(DotHuman);     // координата вертикали предполагаемого проигрыша
         int xDiagonal1MoveAttack = getXYInDiagonal1(DotComp);           // координата Х в диагонали предполагаемого выигрыша
         int yDiagonal1MoveAttack = getXYInDiagonal1(DotComp);           // координата У в диагонали предполагаемого выигрыша
         int xDiagonal1Protection = getXYInDiagonal1(DotHuman);           // координата Х в диагонали предполагаемого проигрыша
@@ -201,16 +201,6 @@ public class Main {
         int xDiagonal2Protection = getXInDiagonal2(DotHuman);           // координата Х в диагонали предполагаемого проигрыша
         int yDiagonal2Protection = getYInDiagonal2(DotHuman);            // координата У в диагонали предполагаемого проигрыша
         do {
-            /*
-             *       Блок выбора дальнейшего хода
-             *       преимущество за ходом с победой
-             *       далее ход с предупреждением проигрыша
-             *       начало выбора с диагоналей
-             *       далее горизонталь и вертикаль
-             *       по горизонталям и ретикалям дается
-             *       одна координата вторая верно подбирается рандомно с проверкой через метод isSpaceValid
-             *
-             * */
             if (xDiagonal1MoveAttack != -1 && yDiagonal1MoveAttack != -1) {
                 x = xDiagonal1MoveAttack;
                 y = yDiagonal1MoveAttack;
@@ -242,11 +232,11 @@ public class Main {
                 y = random.nextInt(SIZE);
                 x = random.nextInt(SIZE);
             }
-        } while (!isSpaceValid( x, y ));
+        } while (!isSpaceValid( y, x ));
         gameField [y][x] = DotComp;
         GameWindow.setJButton(x, y);
-        setMyMove(true);
         printGameField();
+        setMyMove(true);
     }
     public static boolean isHorizontalFull (int horizontal) {   // проверка горизонтали на полную заполненность
         int countFullSpace = 0;
@@ -265,12 +255,11 @@ public class Main {
                 countFullSpace++;
                 if (countFullSpace == SIZE) return true;
             }
-
         }
         return false;
     }
     public static int getVertical (String checkDot ){
-        int yForMove = - 1;                               // координата вертикали  где проверяемых символов DOT_TO_WIN - 1
+        int xForMove = - 1;                               // координата вертикали  где проверяемых символов DOT_TO_WIN - 1
         for (int i = 0; i < SIZE; i++) {
             int countDotVertical = 0;                        // счет символов  по вертикалям
             for (int ii = 0; ii < SIZE; ii++) {
@@ -285,11 +274,11 @@ public class Main {
                 }
             }
         }
-        return  yForMove;
+        return  xForMove;
     }
     public static int getHorizontal (String checkDot ){
 
-        int xForMove = - 1;                               // координата горизонтали где проверяемых символов DOT_TO_WIN - 1
+        int yForMove = - 1;                               // координата горизонтали где проверяемых символов DOT_TO_WIN - 1
         for (int i = 0; i < SIZE; i++) {
             int countDotHorizontal = 0;                      // счет символов в горизонтали где проверяемых символов DOT_TO_WIN - 1
             for (int ii = 0; ii < SIZE; ii++) {
@@ -304,7 +293,7 @@ public class Main {
                 }
             }
         }
-        return  xForMove;
+        return  yForMove;
     }
     public static int getXYInDiagonal1(String symbol){    // получение Х в диагонали
 
@@ -322,7 +311,7 @@ public class Main {
         if (isDiagonal2OneMoveToFull(symbol)) {
             for (int i = 0; i < SIZE; i++) {
                 if (gameField[i][SIZE - 1 - i].equals(DOT_EMPTY)) {
-                    return i;
+                    return SIZE - 1 - i;
                 }
             }
         }
@@ -333,7 +322,7 @@ public class Main {
         if (isDiagonal2OneMoveToFull(symbol)) {
             for (int i = 0; i < SIZE; i++) {
                 if (gameField[i][SIZE - 1 - i].equals(DOT_EMPTY)) {
-                    return (SIZE - 1 - i);
+                    return i;
                 }
             }
         }
