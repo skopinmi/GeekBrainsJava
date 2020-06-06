@@ -6,22 +6,25 @@ import java.util.Scanner;
 
 public class Main {
 /*
-    еще есть глюки ... и какая - то магия.
+    еще есть глюки ... и черная материя.
+    вывод в консоль оставлен для отладки.
     X-O основная часть в Main
+
  */
 
     public static final int SIZE = 3;
-    public static String[][] gameField = new String [SIZE][SIZE];;
     public static final int DOTS_TO_WIN = 3;
-    public static String DOT_EMPTY = "*";
+    public static final String DOT_EMPTY = "*";
+    public static final String[][] gameField = new String [SIZE][SIZE];;
+    public static final Random random = new Random();
+
     private static String  DotComp = "O";
     private static String DotHuman = "X";
-    public static Random random = new Random();
     private static boolean myMove = true;
     private static boolean difficulty = true;
-    public static int countOfHumanWin = 0;
-    public static int countOfAIWin = 0;
-    public static int countOfDraw = 0;
+    private static int countOfHumanWin = 0;
+    private static int countOfAIWin = 0;
+    private static int countOfDraw = 0;
 
 
     public static void main(String[] args) {
@@ -35,75 +38,9 @@ public class Main {
             setMyMove(true);
         } while (continueGame);
     }
-
-
-    public static boolean isGameFieldFull () {
-        for (String [] a : gameField){
-            for(String b : a) {
-                if (b.equals(DOT_EMPTY)) return false;
-            }
-        }
-        return true;
-    }
-
-    public static void newGameField (int SIZE) {
-        for (int i = 0; i < SIZE; i++) {
-            for (int ii = 0; ii < SIZE; ii++) {
-                gameField [i] [ii] = DOT_EMPTY;
-            }
-        }
-    }
-
-
-    public static void printGameField () {
-        for (int i = 0; i <= SIZE; i++) {
-            System.out.print(i + " ");
-        }
-        System.out.println();
-        for (int i = 0; i < SIZE; i++) {
-            System.out.print((i + 1) + " ");
-            for(String a: gameField[i]) {
-                System.out.print(a + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
-    public static void playGame (){                             // последовательность ходов и оформление игры
-        while (true) {
-            printGameField(); // тут магия - без печати ничего не работает...
-            if (!myMove) {
-                if (isWin(DotHuman)) {
-                    MassageWindow.createMassageWindow("Вы выиграли.");
-
-//                countOfHumanWin++;
-                    break;
-                } else if (isGameFieldFull()) {
-                    MassageWindow.createMassageWindow("Ничья.");
-//                countOfDraw++;
-                    break;
-                }
-                if (difficulty) {
-                    moveOfAi();
-                } else {
-                    moveOfAi2();
-                }
-                printGameField();
-                if (isWin(DotComp)) {
-                    MassageWindow.createMassageWindow("Компьютер выиграл.");
-//                countOfAIWin++;
-                    break;
-                } else if (isGameFieldFull()) {
-                    MassageWindow.createMassageWindow("Ничья.");
-//                countOfDraw++;
-                    break;
-                }
-            }
-        }
-        printGameField();
-        newGameField(SIZE);
-    }
+/*
+    блок методов для общения с другими классами
+ */
 
     public static void setMyMove(boolean myMove) {
         Main.myMove = myMove;
@@ -120,13 +57,95 @@ public class Main {
         return gameField[y][x];
     }
 
+    public static void newGameField (int SIZE) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int ii = 0; ii < SIZE; ii++) {
+                gameField [i] [ii] = DOT_EMPTY;
+            }
+        }
+    }
+
+    public static void setDotComp(String dotComp) {
+        DotComp = dotComp;
+    }
+
+    public static void setDotHuman(String dotHuman) {
+        DotHuman = dotHuman;
+    }
+
+    public static void setDifficulty(boolean difficulty) {
+        Main.difficulty = difficulty;
+    }
+
+/*
+    блок внутриклассовых методов
+*/
+
+    public static void playGame (){                             // последовательность ходов и оформление игры
+        while (true) {
+            printGameField(); // тут магия - без печати ничего не работает...
+            if (!myMove) {
+                if (isWin(DotHuman)) {
+                    countOfHumanWin++;
+                    MassageWindow.createMassageWindow("Вы выиграли " + countOfHumanWin + " раз.");
+                    break;
+                } else if (isGameFieldFull()) {
+                    countOfDraw++;
+                    MassageWindow.createMassageWindow("Ничья " + countOfDraw + " раз.");
+                    break;
+                }
+                if (difficulty) {
+                    moveOfAi();
+                } else {
+                    moveOfAi2();
+                }
+                printGameField();
+                if (isWin(DotComp)) {
+                    countOfAIWin++;
+                    MassageWindow.createMassageWindow("Компьютер выиграл " + countOfAIWin + " раз.");
+                    break;
+                } else if (isGameFieldFull()) {
+                    countOfDraw++;
+                    MassageWindow.createMassageWindow("Ничья " + countOfDraw + " раз.");
+                    break;
+                }
+            }
+        }
+        printGameField();
+        newGameField(SIZE);
+    }
+
+    public static boolean isGameFieldFull () {
+        for (String [] a : gameField){
+            for(String b : a) {
+                if (b.equals(DOT_EMPTY)) return false;
+            }
+        }
+        return true;
+    }
+
+    public static void printGameField () {
+        for (int i = 0; i <= SIZE; i++) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+        for (int i = 0; i < SIZE; i++) {
+            System.out.print((i + 1) + " ");
+            for(String a: gameField[i]) {
+                System.out.print(a + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
     public static void moveOfAi (){
         int x;
         int y;
         do {
             x = random.nextInt(SIZE);
             y = random.nextInt(SIZE);
-        } while (!isSpaceValid( x, y ));
+        } while (!isSpaceValid( y, x ));
         gameField [y][x] = DotComp;
         GameWindow.setJButton(x, y);
         setMyMove(true);
@@ -164,21 +183,10 @@ public class Main {
         }
         return false;
     }
+
     public static boolean isSpaceValid ( int y, int x) {
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) return false;
         return gameField[y][x].equals(DOT_EMPTY);
-    }
-
-    public static void setDotComp(String dotComp) {
-        DotComp = dotComp;
-    }
-
-    public static void setDotHuman(String dotHuman) {
-        DotHuman = dotHuman;
-    }
-
-    public static void setDifficulty(boolean difficulty) {
-        Main.difficulty = difficulty;
     }
 
     public static void moveOfAi2 (){                        // интеллект предупреждение проигрыша по горизонтали и вертикали
@@ -238,6 +246,7 @@ public class Main {
         printGameField();
         setMyMove(true);
     }
+
     public static boolean isHorizontalFull (int horizontal) {   // проверка горизонтали на полную заполненность
         int countFullSpace = 0;
         for (int i = 0; i < SIZE; i++) {
@@ -248,6 +257,7 @@ public class Main {
         }
         return false;
     }
+
     public static boolean isVerticalFull (int vertical) {      // проверка вертикали на полную заполненность
         int countFullSpace = 0;
         for (int i = 0; i < SIZE; i++) {
@@ -258,6 +268,7 @@ public class Main {
         }
         return false;
     }
+
     public static int getVertical (String checkDot ){
         int xForMove = - 1;                               // координата вертикали  где проверяемых символов DOT_TO_WIN - 1
         for (int i = 0; i < SIZE; i++) {
@@ -276,6 +287,7 @@ public class Main {
         }
         return  xForMove;
     }
+
     public static int getHorizontal (String checkDot ){
 
         int yForMove = - 1;                               // координата горизонтали где проверяемых символов DOT_TO_WIN - 1
@@ -295,6 +307,7 @@ public class Main {
         }
         return  yForMove;
     }
+
     public static int getXYInDiagonal1(String symbol){    // получение Х в диагонали
 
         if(isDiagonal1OneMoveToFull(symbol)) {
@@ -364,6 +377,7 @@ public class Main {
         }
         return false;
     }
+
     public static boolean isDiagonal1Full () {                     // проверка диагонали 1 на полную заполненность
         int countFullSpace = 0;
         for (int i = 0; i < SIZE; i++) {
@@ -377,6 +391,7 @@ public class Main {
         }
         return false;
     }
+
     public static boolean isDiagonal2Full () {                     // проверка диагонали 2 на полную заполненность
         int countFullSpace = 0;
         for (int i = 0; i < SIZE; i++) {
@@ -387,6 +402,7 @@ public class Main {
         }
         return false;
     }
+
     public static int getXYFirstMove () {                       // определяет координаты первого хода AI + иногда срабатывает в дальнейшем
         // при тестировании выявлено "слабое" место в логике игры
         int xyCheck = (int ) SIZE / 2;                          // добавлена "хитрость" для первого хода

@@ -6,3 +6,9 @@ out/production/GeekBrainsJava/META-INF/
 =======
 *.kotlin_module
 >>>>>>> lesson4
+
+out/artifacts/GeekBrainsJava_jar/GeekBrainsJava.jar
+
+.idea/artifacts/
+
+src/META-INF/MANIFEST.MF
