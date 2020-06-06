@@ -1,5 +1,5 @@
 
-package ru.geekbrains.skopin.lesson8;
+package ru.geekbrains.skopin.java1.lesson8;
 
 import javax.swing.*;
 import java.awt.*;
@@ -139,7 +139,7 @@ public class GameWindow extends JFrame {
                     String w = Main.getGameField(x, y);
                     if (w.equals("*")) {
                         jButtons[a].setText(DOT);
-                        textArea.append("Вы нажали кнопку № " + a + "!");
+//                        textArea.append("Вы нажали кнопку № " + a + "!");
                         Main.putInGameField(x, y);
                         Main.setMyMove(false);
                     }

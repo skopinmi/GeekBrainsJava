@@ -1,4 +1,4 @@
-package ru.geekbrains.skopin.lesson8;
+package ru.geekbrains.skopin.java1.lesson8;
 
 import javax.swing.*;
 

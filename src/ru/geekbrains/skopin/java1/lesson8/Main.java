@@ -1,8 +1,7 @@
 
-package ru.geekbrains.skopin.lesson8;
+package ru.geekbrains.skopin.java1.lesson8;
 
 import java.util.Random;
-import java.util.Scanner;
 
 public class Main {
 /*

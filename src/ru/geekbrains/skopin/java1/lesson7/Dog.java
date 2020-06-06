@@ -1,4 +1,4 @@
-package ru.geekbrains.skopin.lesson7;
+package ru.geekbrains.skopin.java1.lesson7;
 
 public class Dog extends Animal {
     public Dog(String name, int appetite) {
